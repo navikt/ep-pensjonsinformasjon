@@ -24,6 +24,8 @@ jobs:
         java-version: 11
 
     - name: build and update version
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: ./gradlew build release -Prelease.useAutomaticVersion=true
   
     - name: check out release-version
