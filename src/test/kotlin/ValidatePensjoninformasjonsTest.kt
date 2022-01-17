@@ -60,8 +60,8 @@ class ValidatePensjoninformasjonsTest {
 
         assertEquals("22915550", sak?.sakId.toString())
         assertEquals("UFOREP", sak?.sakType)
-        assertEquals(3, sak?.kravHistorikkListe?.kravHistorikkListe?.size)
         assertEquals(1, sak?.ytelsePerMaanedListe?.ytelsePerMaanedListe?.size)
+        assertEquals(3, sak?.kravHistorikkListe?.kravHistorikkListe?.size)
 
     }
 
