@@ -12,7 +12,9 @@ import org.springframework.util.ResourceUtils
 import org.springframework.web.client.RestTemplate
 import io.mockk.every
 import io.mockk.mockk
+import org.junit.jupiter.api.Disabled
 
+@Disabled
 class ValidatePensjoninformasjonsTest {
 
 
