@@ -8,14 +8,29 @@ plugins {
     id("se.patrikerdes.use-latest-versions") version "0.2.13"
     id("org.owasp.dependencycheck") version "5.3.2.1"
     id "org.openrepose.gradle.plugins.jaxb" version "2.5.0"
+    id("maven-publish")
 
 }
 
 group = "no.nav.eessi.pensjon"
 
 java {
-    withJavadocJar()
-    withSourcesJar()
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+compileKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "11"
+    }
+}
+
+compileTestKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "11"
+    }
 }
 
 configurations {
@@ -78,6 +93,26 @@ dependencies {
 release {
     newVersionCommitMessage = "[Release Plugin] - next version commit: "
     tagTemplate = "release-\${version}"
+}
+
+// https://help.github.com/en/actions/language-and-framework-guides/publishing-java-packages-with-gradle#publishing-packages-to-github-packages
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/navikt/ep-personoppslag"
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
 }
 
 repositories {
