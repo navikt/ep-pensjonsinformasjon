@@ -1,18 +1,26 @@
+import io.mockk.every
+import io.mockk.mockk
 import no.nav.eessi.pensjon.pensjonsinformasjon.PensjonRequestBuilder
 import no.nav.eessi.pensjon.pensjonsinformasjon.PensjonsinformasjonClient
-import no.nav.eessi.pensjon.pensjonsinformasjon.simpleFormat
+import no.nav.eessi.pensjon.pensjonsinformasjon.clients.FinnSak.finnSak
+import no.nav.eessi.pensjon.pensjonsinformasjon.clients.simpleFormat
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.util.ResourceUtils
 import org.springframework.web.client.RestTemplate
-import io.mockk.every
-import io.mockk.mockk
+
+<<<<<<< HEAD
 import org.junit.jupiter.api.Disabled
+=======
+import no.nav.eessi.pensjon.pensjonsinformasjon.clients.FinnSak.finnSak
+import no.nav.eessi.pensjon.pensjonsinformasjon.clients.simpleFormat
+>>>>>>> 96c8a3e (bumper versjon samt rydding av kode versjon 2.0.0)
 
 @Disabled
 class ValidatePensjoninformasjonsTest {
@@ -58,7 +66,7 @@ class ValidatePensjoninformasjonsTest {
         every { mockrestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(String::class.java)) } returns mockResponseEntity
         val data = pensjonsinformasjonClient.hentAltPaaAktoerId("1243")
 
-        val sak = PensjonsinformasjonClient.finnSak("22915550", data)
+        val sak = finnSak("22915550", data)
 
         assertEquals("22915550", sak?.sakId.toString())
         assertEquals("UFOREP", sak?.sakType)

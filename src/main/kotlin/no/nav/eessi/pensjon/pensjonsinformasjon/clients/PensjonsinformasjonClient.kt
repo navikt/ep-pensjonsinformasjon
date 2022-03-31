@@ -35,7 +35,7 @@ import javax.xml.transform.stream.StreamSource
 @Component
 @CacheConfig(cacheNames = ["PensjonsinformasjonClient"])
 class PensjonsinformasjonClient(
-    private val pensjonsinformasjonOidcRestTemplate: RestTemplate,
+    private val pensjoninformasjonRestTemplate: RestTemplate,
     private val pensjonRequestBuilder: PensjonRequestBuilder,
     @Autowired(required = false) private val metricsHelper: MetricsHelper = MetricsHelper(SimpleMeterRegistry())) {
 
