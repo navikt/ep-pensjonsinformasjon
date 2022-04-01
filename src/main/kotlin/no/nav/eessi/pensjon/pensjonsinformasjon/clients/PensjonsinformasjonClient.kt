@@ -3,8 +3,9 @@ package no.nav.eessi.pensjon.pensjonsinformasjon
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import no.nav.eessi.pensjon.metrics.MetricsHelper
-import no.nav.eessi.pensjon.pensjonsinformasjon.clients.FinnSak.finnSak
-import no.nav.eessi.pensjon.pensjonsinformasjon.clients.Transformation
+import no.nav.eessi.pensjon.pensjonsinformasjon.FinnSak.finnSak
+import no.nav.eessi.pensjon.pensjonsinformasjon.clients.PensjonRequestBuilder
+import no.nav.eessi.pensjon.pensjonsinformasjon.clients.PensjonsinformasjonTransformation
 import no.nav.eessi.pensjon.pensjonsinformasjon.clients.simpleFormat
 import no.nav.eessi.pensjon.services.pensjonsinformasjon.Pensjontype
 import no.nav.pensjon.v1.pensjonsinformasjon.Pensjonsinformasjon
@@ -29,12 +30,12 @@ import javax.annotation.PostConstruct
 @CacheConfig(cacheNames = ["PensjonsinformasjonClient"])
 class PensjonsinformasjonClient(
     private val pensjoninformasjonRestTemplate: RestTemplate,
-    private val pensjonRequestBuilder: PensjonRequestBuilder,
     @Autowired(required = false) private val metricsHelper: MetricsHelper = MetricsHelper(SimpleMeterRegistry())) {
 
     private val logger = LoggerFactory.getLogger(PensjonsinformasjonClient::class.java)
 
-    private val transform = Transformation
+    private val pensjonRequestBuilder = PensjonRequestBuilder
+    private val transform = PensjonsinformasjonTransformation
 
     private lateinit var pensjoninformasjonHentKunSakType: MetricsHelper.Metric
     private lateinit var pensjoninformasjonHentAltPaaIdent: MetricsHelper.Metric
@@ -52,7 +53,8 @@ class PensjonsinformasjonClient(
     }
 
     fun hentKunSakType(sakId: String, aktoerid: String): Pensjontype {
-            val sak = finnSak(sakId, hentAltPaaAktoerId(aktoerid)) ?: return Pensjontype(sakId, "")
+        require(aktoerid.isNotBlank()) { "AktoerId kan ikke være blank/tom"}
+        val sak = finnSak(sakId, hentAltPaaAktoerId(aktoerid)) ?: return Pensjontype(sakId, "")
             return Pensjontype(sakId, sak.sakType)
     }
 
@@ -72,6 +74,7 @@ class PensjonsinformasjonClient(
     }
 
     fun hentAltPaaVedtak(vedtaksId: String): Pensjonsinformasjon {
+        require(vedtaksId.isNotBlank()) { "vedtakid kan ikke være blank/tom"}
 
         return pensjoninformasjonAltPaaVedtak.measure {
 

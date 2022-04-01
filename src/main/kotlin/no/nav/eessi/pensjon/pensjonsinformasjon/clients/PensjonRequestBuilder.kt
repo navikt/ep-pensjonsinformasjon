@@ -1,21 +1,6 @@
-package no.nav.eessi.pensjon.pensjonsinformasjon
+package no.nav.eessi.pensjon.pensjonsinformasjon.clients
 
-import org.springframework.stereotype.Component
-import org.springframework.util.ResourceUtils
-import org.w3c.dom.Document
-import javax.xml.parsers.DocumentBuilderFactory
-
-@Component
-class PensjonRequestBuilder {
-
-    private final val documentBuilderFactory = DocumentBuilderFactory.newInstance().apply { isNamespaceAware = true }
-    private final val documentBuilder = documentBuilderFactory.newDocumentBuilder()
-
-    private val fullRequestDocument: Document
-
-    init {
-        fullRequestDocument = documentBuilder.parse(ResourceUtils.getURL("classpath:pensjonsinformasjon/v1/v1.Pensjonsinformasjon.xsd").openStream())
-    }
+object PensjonRequestBuilder {
 
     fun requestBodyForVedtakFromAString() =
             """

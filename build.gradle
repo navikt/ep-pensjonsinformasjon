@@ -31,9 +31,9 @@ compileTestKotlin {
     }
 }
 
-configurations {
-    xsd
-}
+//configurations {
+//    xsd
+//}
 
 repositories {
     mavenCentral()

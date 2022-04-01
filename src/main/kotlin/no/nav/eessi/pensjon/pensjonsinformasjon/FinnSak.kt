@@ -1,4 +1,4 @@
-package no.nav.eessi.pensjon.pensjonsinformasjon.clients
+package no.nav.eessi.pensjon.pensjonsinformasjon
 
 import no.nav.pensjon.v1.pensjonsinformasjon.Pensjonsinformasjon
 import no.nav.pensjon.v1.sak.V1Sak

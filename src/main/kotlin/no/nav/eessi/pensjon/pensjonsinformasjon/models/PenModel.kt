@@ -1,13 +1,12 @@
 package no.nav.eessi.pensjon.pensjonsinformasjon
 
-import com.fasterxml.jackson.annotation.JsonProperty
-
 enum class Kravtype {
     REVURD,
     F_BH_MED_UTL,
     FORSTEG_BH,
     F_BH_BO_UTL,
-    F_BH_KUN_UTL
+    F_BH_KUN_UTL,
+
 }
 
 enum class Kravstatus {
@@ -32,10 +31,16 @@ enum class EPSaktype {
     GJENLEV;
 }
 
-enum class Sakstatus {
-    INNV,
-    AVSL,
-    @JsonProperty("Ingen status")
-    INGEN_STATUS,
-    TIL_BEHANDLING;
+enum class Sakstatus(val value: String) {
+    INNV("INNV"),
+    AVSL("AVSL"),
+    INGEN_STATUS("Ingen status"),
+    UKJENT("Ukjent"),
+    TIL_BEHANDLING("TIL_BEHANDLING");
+
+    companion object {
+        fun byValue(value: String): Sakstatus {
+            return values().first { sakstatus -> sakstatus.value == value }
+        }
+    }
 }

@@ -8,9 +8,9 @@ import java.io.StringReader
 import javax.xml.bind.JAXBContext
 import javax.xml.transform.stream.StreamSource
 
-internal object Transformation {
+internal object PensjonsinformasjonTransformation {
 
-    private val logger = LoggerFactory.getLogger(Transformation::class.java)
+    private val logger = LoggerFactory.getLogger(PensjonsinformasjonTransformation::class.java)
 
     //transform xmlString til Pensjoninformasjon object
     fun transform(xmlString: String): Pensjonsinformasjon {
