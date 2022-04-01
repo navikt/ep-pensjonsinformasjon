@@ -1,9 +1,9 @@
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.6.10"
+    id("org.jetbrains.kotlin.plugin.spring") version "1.6.10"
     id("net.researchgate.release") version "2.8.1"
     id("com.adarshr.test-logger") version "3.0.0"
-    id("org.jetbrains.kotlin.plugin.spring") version "1.6.10"
     id("com.github.ben-manes.versions") version "0.42.0"
     id("se.patrikerdes.use-latest-versions") version "0.2.18"
     id("org.owasp.dependencycheck") version "7.0.1"
@@ -21,15 +21,13 @@ java {
 
 compileKotlin {
     kotlinOptions {
-        freeCompilerArgs = ["-Xjsr305=strict"]
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
 }
 
 compileTestKotlin {
     kotlinOptions {
-        freeCompilerArgs = ["-Xjsr305=strict"]
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
 }
 
@@ -44,37 +42,28 @@ repositories {
 dependencies {
 
     // Spring-boot
-    implementation("org.springframework.boot:spring-boot-starter-web:2.6.2") {
+    implementation("org.springframework.boot:spring-boot-starter-web:2.6.5") {
         exclude module: 'tomcat-embed-core'
     }
     implementation("org.springframework:spring-web:5.3.+")
     implementation("org.springframework:spring-context:5.3.+")
 
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.6.10"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10")
     implementation("ch.qos.logback:logback-classic:1.2.11")
     implementation("io.micrometer:micrometer-registry-prometheus:1.4.2")
 
-    implementation("no.nav.eessi.pensjon:ep-security-sts:0.0.22")
     implementation("no.nav.eessi.pensjon:ep-metrics:0.4.+")
     implementation("no.nav.eessi.pensjon:ep-logging:1.+")
-    //OIDC
-    implementation("no.nav.security:token-validation-spring:1.3.8")
-    implementation("no.nav.security:token-validation-jaxrs:1.3.8")
-    implementation("no.nav.security:token-client-spring:1.3.8")
 
     implementation("com.sun.xml.ws:jaxws-ri:2.3.2")
-    jaxb ('org.glassfish.jaxb:jaxb-xjc:2.3.2')
-    jaxb ('org.glassfish.jaxb:jaxb-runtime:2.3.2')
-
-
-//    compileOnly("javax.servlet:javax.servlet-api:4.0.1")
-
+    implementation('org.glassfish.jaxb:jaxb-xjc:2.3.2')
+    implementation('org.glassfish.jaxb:jaxb-runtime:2.3.2')
 
     //Jackson json
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2")
 
-    xsd("no.nav.tjenestespesifikasjoner:pensjonsinformasjon-v1-tjenestespesifikasjon:1.2021.01.21-11.34-02f5eb27bb76")
+    implementation("no.nav.tjenestespesifikasjoner:pensjonsinformasjon-v1-tjenestespesifikasjon:1.2021.01.21-11.34-02f5eb27bb76")
 
     testImplementation("javax.servlet:javax.servlet-api:4.0.1")
     testImplementation("org.junit.platform:junit-platform-suite-api:1.7.1")
@@ -118,44 +107,6 @@ publishing {
 test {
     useJUnitPlatform()
 }
-
-// Temporary - until these misplaced dirs are cleaned in all builds
-processResources.doFirst {
-    delete "${projectDir}/src/main/resources/schemas"
-    delete "${projectDir}/src/main/resources/xsdtemp"
-}
-
-ext.xsdTemp = "${buildDir}/xsdtemp"
-ext.schemasDir = "${buildDir}/schemas"
-ext.xsdArtifactName = "pensjonsinformasjon-xsd.jar"
-
-ext.pensjonsinformasjonDir = "${schemasDir}"
-
-task copyPensjonsinformasjonXsd(type: Copy) {
-    from(configurations.xsd) {
-        rename '^pensjonsinformasjon.*', 'pensjonsinformasjon-xsd.jar'
-    }
-    into xsdTemp
-}
-
-task copyPensjonsinformasjonXsdsFromArtifacts(type: Copy) {
-    with copyPensjonsinformasjonXsd
-    includeEmptyDirs = false
-    from zipTree( xsdTemp + "/" + xsdArtifactName)
-    include '**/*.xsd'
-    into pensjonsinformasjonDir
-}
-
-jaxb {
-    xsdDir = pensjonsinformasjonDir
-}
-
-copyPensjonsinformasjonXsdsFromArtifacts.dependsOn tasks["copyPensjonsinformasjonXsd"]
-xjc.dependsOn tasks["copyPensjonsinformasjonXsdsFromArtifacts"]
-compileKotlin.dependsOn tasks["xjc"]
-
-sourceSets["main"].resources.srcDir(schemasDir)
-sourceSets["main"].java.srcDir("${buildDir}/generated-sources/xjc")
 
 wrapper {
     distributionType = Wrapper.DistributionType.ALL

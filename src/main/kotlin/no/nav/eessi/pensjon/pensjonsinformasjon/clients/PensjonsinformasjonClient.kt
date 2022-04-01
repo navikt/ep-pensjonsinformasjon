@@ -3,9 +3,11 @@ package no.nav.eessi.pensjon.pensjonsinformasjon
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import no.nav.eessi.pensjon.metrics.MetricsHelper
+import no.nav.eessi.pensjon.pensjonsinformasjon.clients.FinnSak.finnSak
+import no.nav.eessi.pensjon.pensjonsinformasjon.clients.Transformation
+import no.nav.eessi.pensjon.pensjonsinformasjon.clients.simpleFormat
 import no.nav.eessi.pensjon.services.pensjonsinformasjon.Pensjontype
 import no.nav.pensjon.v1.pensjonsinformasjon.Pensjonsinformasjon
-import no.nav.pensjon.v1.sak.V1Sak
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cache.annotation.CacheConfig
@@ -20,16 +22,7 @@ import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.util.UriComponentsBuilder
-import java.io.StringReader
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.ZoneId
-import java.util.*
 import javax.annotation.PostConstruct
-import javax.xml.bind.JAXBContext
-import javax.xml.datatype.DatatypeFactory
-import javax.xml.datatype.XMLGregorianCalendar
-import javax.xml.transform.stream.StreamSource
 
 
 @Component
@@ -39,16 +32,9 @@ class PensjonsinformasjonClient(
     private val pensjonRequestBuilder: PensjonRequestBuilder,
     @Autowired(required = false) private val metricsHelper: MetricsHelper = MetricsHelper(SimpleMeterRegistry())) {
 
-    companion object {
-        private val logger = LoggerFactory.getLogger(PensjonsinformasjonClient::class.java)
+    private val logger = LoggerFactory.getLogger(PensjonsinformasjonClient::class.java)
 
-        fun finnSak(sakId: String, pendata: Pensjonsinformasjon): V1Sak? {
-            logger.info("Søker brukersSakerListe etter sakId: $sakId")
-            val v1saklist = pendata.brukersSakerListe.brukersSakerListe
-
-            return v1saklist.firstOrNull { sak -> "${sak.sakId}" == sakId  }
-        }
-    }
+    private val transform = Transformation
 
     private lateinit var pensjoninformasjonHentKunSakType: MetricsHelper.Metric
     private lateinit var pensjoninformasjonHentAltPaaIdent: MetricsHelper.Metric
@@ -70,7 +56,6 @@ class PensjonsinformasjonClient(
             return Pensjontype(sakId, sak.sakType)
     }
 
-    @Throws(PensjoninformasjonException::class, HttpServerErrorException::class, HttpClientErrorException::class)
     fun hentAltPaaAktoerId(aktoerId: String): Pensjonsinformasjon {
         require(aktoerId.isNotBlank()) { "AktoerId kan ikke være blank/tom"}
 
@@ -82,13 +67,10 @@ class PensjonsinformasjonClient(
             logger.info("Henter pensjonsinformasjon for aktor: $aktoerId")
 
             val xmlResponse = doRequest("/aktor/", aktoerId, requestBody, pensjoninformasjonHentAltPaaIdentRequester)
-            transform(xmlResponse)
+            transform.transform(xmlResponse)
         }
     }
 
-
-
-    @Throws(PensjoninformasjonException::class, HttpServerErrorException::class, HttpClientErrorException::class)
     fun hentAltPaaVedtak(vedtaksId: String): Pensjonsinformasjon {
 
         return pensjoninformasjonAltPaaVedtak.measure {
@@ -98,7 +80,7 @@ class PensjonsinformasjonClient(
             logger.info("Henter pensjonsinformasjon for vedtaksid: $vedtaksId")
 
             val xmlResponse = doRequest("/vedtak", vedtaksId, requestBody, pensjoninformasjonAltPaaVedtakRequester)
-            transform(xmlResponse)
+            transform.transform(xmlResponse)
         }
     }
 
@@ -123,26 +105,6 @@ class PensjonsinformasjonClient(
         return kravHistorikk[0]?.mottattDato!!.simpleFormat()
     }
 
-
-    //transform xmlString til Pensjoninformasjon object
-    fun transform(xmlString: String) : Pensjonsinformasjon {
-        return try {
-
-            val context = JAXBContext.newInstance(Pensjonsinformasjon::class.java)
-            val unmarshaller = context.createUnmarshaller()
-
-            logger.debug("Pensjonsinformasjon xml: $xmlString")
-            val res = unmarshaller.unmarshal(StreamSource(StringReader(xmlString)), Pensjonsinformasjon::class.java)
-
-            res.value as Pensjonsinformasjon
-
-        } catch (ex: Exception) {
-            logger.error("Feiler med xml transformering til Pensjoninformasjon")
-            throw PensjoninformasjonProcessingException("Feiler med xml transformering til Pensjoninformasjon: ${ex.message}")
-        }
-    }
-
-    @Throws(PensjoninformasjonException::class, HttpServerErrorException::class, HttpClientErrorException::class)
     private fun doRequest(path: String, id: String, requestBody: String, metric: MetricsHelper.Metric): String {
 
         val headers = HttpHeaders()
@@ -153,7 +115,7 @@ class PensjonsinformasjonClient(
 
         return metric.measure {
             return@measure try {
-                val responseEntity = pensjonsinformasjonOidcRestTemplate.exchange(
+                val responseEntity = pensjoninformasjonRestTemplate.exchange(
                         uriBuilder.toUriString(),
                         HttpMethod.POST,
                         requestEntity,
@@ -164,43 +126,19 @@ class PensjonsinformasjonClient(
             } catch (hsee: HttpServerErrorException) {
                 val errorBody = hsee.responseBodyAsString
                 logger.error("PensjoninformasjonService feiler med HttpServerError body: $errorBody", hsee)
-                throw PensjoninformasjonException("PensjoninformasjonService feiler med innhenting av pensjoninformasjon fra PESYS, prøv igjen om litt")
+                throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "PensjoninformasjonService feiler med innhenting av pensjoninformasjon fra PESYS, prøv igjen om litt")
             } catch (hcee: HttpClientErrorException) {
                 val errorBody = hcee.responseBodyAsString
                 logger.error("PensjoninformasjonService feiler med HttpClientError body: $errorBody", hcee)
-                throw PensjoninformasjonException("PensjoninformasjonService feiler med innhenting av pensjoninformasjon fra PESYS, prøv igjen om litt")
+                throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "PensjoninformasjonService feiler med innhenting av pensjoninformasjon fra PESYS, prøv igjen om litt")
             } catch (ex: Exception) {
                 logger.error("PensjoninformasjonService feiler med kontakt til PESYS pensjoninformajson, ${ex.message}", ex)
-                throw PensjoninformasjonException("PensjoninformasjonService feiler med ukjent feil mot PESYS. melding: ${ex.message}")
+                throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "PensjoninformasjonService feiler med ukjent feil mot PESYS. melding: ${ex.message}")
             }
         }
     }
 }
-private const val sdfPattern = "yyyy-MM-dd"
 
-fun XMLGregorianCalendar.simpleFormat(): String {
-    if (this.year > 2500) {
-        return ""
-    }
-    val date = SimpleDateFormat(sdfPattern).parse(this.toString())
-    return SimpleDateFormat(sdfPattern).format(date)
-}
-
-fun Date.simpleFormat(): String = SimpleDateFormat(sdfPattern).format(this)
-
-fun createXMLCalendarFromString(dateStr: String): XMLGregorianCalendar {
-    val date = SimpleDateFormat(sdfPattern).parse(dateStr)
-    val gcal = GregorianCalendar()
-    gcal.timeInMillis = date.time
-    return DatatypeFactory.newInstance().newXMLGregorianCalendar(gcal)
-}
-
-fun convertToXMLocal(time: LocalDate): XMLGregorianCalendar {
-    val gcal = GregorianCalendar()
-    gcal.time = Date.from(time.atStartOfDay(ZoneId.systemDefault()).toInstant())
-    return DatatypeFactory.newInstance().newXMLGregorianCalendar(gcal)
-}
 
 class PensjoninformasjonException(message: String) : ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, message)
 
-class PensjoninformasjonProcessingException(message: String) : ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, message)
