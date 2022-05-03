@@ -9,7 +9,8 @@ plugins {
     id("org.owasp.dependencycheck") version "7.0.1"
     id "org.openrepose.gradle.plugins.jaxb" version "2.5.0"
     id("maven-publish")
-
+    id "org.sonarqube" version "3.3"
+    id 'jacoco'
 }
 
 group = "no.nav.eessi.pensjon"
@@ -103,6 +104,19 @@ publishing {
         }
     }
 }
+
+// https://docs.gradle.org/current/userguide/jacoco_plugin.html
+jacoco {
+    toolVersion = "0.8.8"
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
+}
+
+tasks.sonarqube.dependsOn tasks["jacocoTestReport"]
 
 test {
     useJUnitPlatform()
