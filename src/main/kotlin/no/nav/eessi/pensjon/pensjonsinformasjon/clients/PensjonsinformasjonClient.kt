@@ -23,7 +23,10 @@ import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.util.UriComponentsBuilder
+import java.io.StringReader
 import javax.annotation.PostConstruct
+import javax.xml.bind.JAXBContext
+import javax.xml.transform.stream.StreamSource
 
 
 @Component
@@ -42,6 +45,12 @@ class PensjonsinformasjonClient(
     private lateinit var pensjoninformasjonAltPaaVedtak: MetricsHelper.Metric
     private lateinit var pensjoninformasjonHentAltPaaIdentRequester: MetricsHelper.Metric
     private lateinit var pensjoninformasjonAltPaaVedtakRequester: MetricsHelper.Metric
+
+    private enum class REQUESTPATH(val path: String) {
+        FNR("/fnr"),
+        VEDTAK("/vedtak"),
+        AKTOR("/aktor");
+    }
 
     @PostConstruct
     fun initMetrics() {
@@ -108,6 +117,38 @@ class PensjonsinformasjonClient(
         return kravHistorikk[0]?.mottattDato!!.simpleFormat()
     }
 
+    fun hentAltPaaFNR(fnr: String, aktoerId: String): Pensjonsinformasjon {
+        require(fnr.isNotBlank()) { "AktoerId kan ikke være blank/tom"}
+
+        return pensjoninformasjonHentAltPaaIdent.measure {
+
+            val requestBody = pensjonRequestBuilder.requestBodyForSakslisteFromAString()
+
+            logger.debug("Requestbody:\n$requestBody")
+            logger.info("Henter pensjonsinformasjon for fnr med aktørid: $aktoerId")
+
+            val xmlResponse = doRequest(REQUESTPATH.FNR.name, fnr,  requestBody, pensjoninformasjonHentAltPaaIdentRequester)
+            transform(xmlResponse)
+        }
+    }
+
+    fun transform(xmlString: String) : Pensjonsinformasjon {
+        return try {
+
+            val context = JAXBContext.newInstance(Pensjonsinformasjon::class.java)
+            val unmarshaller = context.createUnmarshaller()
+
+            logger.debug("Pensjonsinformasjon xml: $xmlString")
+            val res = unmarshaller.unmarshal(StreamSource(StringReader(xmlString)), Pensjonsinformasjon::class.java)
+
+            res.value as Pensjonsinformasjon
+
+        } catch (ex: Exception) {
+            logger.error("Feiler med xml transformering til Pensjoninformasjon")
+            throw PensjoninformasjonProcessingException("Feiler med xml transformering til Pensjoninformasjon: ${ex.message}")
+        }
+    }
+
     private fun doRequest(path: String, id: String, requestBody: String, metric: MetricsHelper.Metric): String {
 
         val headers = HttpHeaders()
@@ -142,6 +183,5 @@ class PensjonsinformasjonClient(
     }
 }
 
-
 class PensjoninformasjonException(message: String) : ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, message)
-
+class PensjoninformasjonProcessingException(message: String) : ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, message)
