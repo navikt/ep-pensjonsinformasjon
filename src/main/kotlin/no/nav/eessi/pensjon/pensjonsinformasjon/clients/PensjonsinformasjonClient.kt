@@ -67,6 +67,7 @@ class PensjonsinformasjonClient(
             return Pensjontype(sakId, sak.sakType)
     }
 
+    @Deprecated("Replace with hentAltPaaFNR")
     fun hentAltPaaAktoerId(aktoerId: String): Pensjonsinformasjon {
         require(aktoerId.isNotBlank()) { "AktoerId kan ikke være blank/tom"}
 
@@ -77,13 +78,13 @@ class PensjonsinformasjonClient(
             logger.debug("Requestbody:\n$requestBody")
             logger.info("Henter pensjonsinformasjon for aktor: $aktoerId")
 
-            val xmlResponse = doRequest("/aktor/", aktoerId, requestBody, pensjoninformasjonHentAltPaaIdentRequester)
-            transform.transform(xmlResponse)
+            val xmlResponse = doRequest(REQUESTPATH.AKTOR, aktoerId, requestBody, pensjoninformasjonHentAltPaaIdentRequester)
+            transform(xmlResponse)
         }
     }
 
+
     fun hentAltPaaVedtak(vedtaksId: String): Pensjonsinformasjon {
-        require(vedtaksId.isNotBlank()) { "vedtakid kan ikke være blank/tom"}
 
         return pensjoninformasjonAltPaaVedtak.measure {
 
@@ -91,8 +92,8 @@ class PensjonsinformasjonClient(
             logger.debug("Requestbody:\n$requestBody")
             logger.info("Henter pensjonsinformasjon for vedtaksid: $vedtaksId")
 
-            val xmlResponse = doRequest("/vedtak", vedtaksId, requestBody, pensjoninformasjonAltPaaVedtakRequester)
-            transform.transform(xmlResponse)
+            val xmlResponse = doRequest(REQUESTPATH.VEDTAK, vedtaksId, requestBody, pensjoninformasjonAltPaaVedtakRequester)
+            transform(xmlResponse)
         }
     }
 
@@ -127,7 +128,7 @@ class PensjonsinformasjonClient(
             logger.debug("Requestbody:\n$requestBody")
             logger.info("Henter pensjonsinformasjon for fnr med aktørid: $aktoerId")
 
-            val xmlResponse = doRequest(REQUESTPATH.FNR.name, fnr,  requestBody, pensjoninformasjonHentAltPaaIdentRequester)
+            val xmlResponse = doRequest(REQUESTPATH.FNR, fnr,  requestBody, pensjoninformasjonHentAltPaaIdentRequester)
             transform(xmlResponse)
         }
     }
@@ -149,35 +150,45 @@ class PensjonsinformasjonClient(
         }
     }
 
-    private fun doRequest(path: String, id: String, requestBody: String, metric: MetricsHelper.Metric): String {
+    @Throws(PensjoninformasjonException::class, HttpServerErrorException::class, HttpClientErrorException::class)
+    private fun doRequest(path: REQUESTPATH, id: String, requestBody: String, metric: MetricsHelper.Metric): String {
 
         val headers = HttpHeaders()
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML_VALUE)
+        if (path == REQUESTPATH.FNR) {
+            headers.add("fnr", id)
+        }
         val requestEntity = HttpEntity(requestBody, headers)
 
-        val uriBuilder = UriComponentsBuilder.fromPath(path).pathSegment(id)
+        val uriBuilder = if (path == REQUESTPATH.FNR) {
+            UriComponentsBuilder.fromPath(path.path)
+        } else {
+            UriComponentsBuilder.fromPath(path.path).pathSegment(id)
+        }
+
+        logger.info("Pensjoninformasjon Uri: ${uriBuilder.toUriString()}")
 
         return metric.measure {
             return@measure try {
                 val responseEntity = pensjoninformasjonRestTemplate.exchange(
-                        uriBuilder.toUriString(),
-                        HttpMethod.POST,
-                        requestEntity,
-                        String::class.java)
+                    uriBuilder.toUriString(),
+                    HttpMethod.POST,
+                    requestEntity,
+                    String::class.java)
 
                 responseEntity.body!!
 
             } catch (hsee: HttpServerErrorException) {
                 val errorBody = hsee.responseBodyAsString
                 logger.error("PensjoninformasjonService feiler med HttpServerError body: $errorBody", hsee)
-                throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "PensjoninformasjonService feiler med innhenting av pensjoninformasjon fra PESYS, prøv igjen om litt")
+                throw PensjoninformasjonException("PensjoninformasjonService feiler med innhenting av pensjoninformasjon fra PESYS, prøv igjen om litt")
             } catch (hcee: HttpClientErrorException) {
                 val errorBody = hcee.responseBodyAsString
                 logger.error("PensjoninformasjonService feiler med HttpClientError body: $errorBody", hcee)
-                throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "PensjoninformasjonService feiler med innhenting av pensjoninformasjon fra PESYS, prøv igjen om litt")
+                throw PensjoninformasjonException("PensjoninformasjonService feiler med innhenting av pensjoninformasjon fra PESYS, prøv igjen om litt")
             } catch (ex: Exception) {
                 logger.error("PensjoninformasjonService feiler med kontakt til PESYS pensjoninformajson, ${ex.message}", ex)
-                throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "PensjoninformasjonService feiler med ukjent feil mot PESYS. melding: ${ex.message}")
+                throw PensjoninformasjonException("PensjoninformasjonService feiler med ukjent feil mot PESYS. melding: ${ex.message}")
             }
         }
     }
