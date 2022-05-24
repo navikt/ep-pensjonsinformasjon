@@ -2,6 +2,7 @@ import io.mockk.every
 import io.mockk.mockk
 import no.nav.eessi.pensjon.pensjonsinformasjon.FinnSak.finnSak
 import no.nav.eessi.pensjon.pensjonsinformasjon.PensjonsinformasjonClient
+import no.nav.eessi.pensjon.pensjonsinformasjon.clients.PensjonRequestBuilder
 import no.nav.eessi.pensjon.pensjonsinformasjon.clients.simpleFormat
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -22,7 +23,7 @@ class ValidatePensjoninformasjonsTest {
 
     @BeforeEach
     fun setup() {
-        pensjonsinformasjonClient = PensjonsinformasjonClient(mockrestTemplate)
+        pensjonsinformasjonClient = PensjonsinformasjonClient(mockrestTemplate, PensjonRequestBuilder())
         pensjonsinformasjonClient.initMetrics()
     }
 

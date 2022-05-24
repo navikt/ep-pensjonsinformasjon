@@ -5,7 +5,6 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import no.nav.eessi.pensjon.metrics.MetricsHelper
 import no.nav.eessi.pensjon.pensjonsinformasjon.FinnSak.finnSak
 import no.nav.eessi.pensjon.pensjonsinformasjon.clients.PensjonRequestBuilder
-import no.nav.eessi.pensjon.pensjonsinformasjon.clients.PensjonsinformasjonTransformation
 import no.nav.eessi.pensjon.pensjonsinformasjon.clients.simpleFormat
 import no.nav.eessi.pensjon.services.pensjonsinformasjon.Pensjontype
 import no.nav.pensjon.v1.pensjonsinformasjon.Pensjonsinformasjon
@@ -33,12 +32,10 @@ import javax.xml.transform.stream.StreamSource
 @CacheConfig(cacheNames = ["PensjonsinformasjonClient"])
 class PensjonsinformasjonClient(
     private val pensjoninformasjonRestTemplate: RestTemplate,
+    private val pensjonRequestBuilder: PensjonRequestBuilder,
     @Autowired(required = false) private val metricsHelper: MetricsHelper = MetricsHelper(SimpleMeterRegistry())) {
 
     private val logger = LoggerFactory.getLogger(PensjonsinformasjonClient::class.java)
-
-    private val pensjonRequestBuilder = PensjonRequestBuilder
-    private val transform = PensjonsinformasjonTransformation
 
     private lateinit var pensjoninformasjonHentKunSakType: MetricsHelper.Metric
     private lateinit var pensjoninformasjonHentAltPaaIdent: MetricsHelper.Metric
