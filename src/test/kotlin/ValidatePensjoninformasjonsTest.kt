@@ -77,19 +77,6 @@ class ValidatePensjoninformasjonsTest {
         assertEquals("UFOREP", sakType.sakType)
     }
 
-    @Test
-    fun `Sjekker pensjonsinformasjon hentKravDatoFraAktor validerer`() {
-        val mockResponseEntity = createResponseEntityFromJsonFile("classpath:P2100-GJENLEV-REVURDERING-M-KRAVID-INNV.xml")
-        every { mockrestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(String::class.java)) } returns mockResponseEntity
-
-        val kravDato = pensjonsinformasjonClient.hentKravDatoFraAktor("1232","22915550", "41098604")
-
-        //2020-08-20T00:00:00+02:00
-        assertEquals("2020-08-20", kravDato)
-
-    }
-
-
     private fun mockAnyRequest(kravLokasjon : String) {
         val mockResponseEntity = createResponseEntityFromJsonFile(kravLokasjon)
         every { mockrestTemplate.exchange(any<String>(), any(), any(), eq(String::class.java)) } returns mockResponseEntity
