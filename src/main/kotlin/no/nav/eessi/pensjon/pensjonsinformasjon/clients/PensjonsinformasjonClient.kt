@@ -80,7 +80,6 @@ class PensjonsinformasjonClient(
         }
     }
 
-
     fun hentAltPaaVedtak(vedtaksId: String): Pensjonsinformasjon {
 
         return pensjoninformasjonAltPaaVedtak.measure {
@@ -93,13 +92,6 @@ class PensjonsinformasjonClient(
             transform(xmlResponse)
         }
     }
-
-/*
-    fun hentKravDatoFraAktor(aktorId: String, saksId: String, kravId: String) : String? {
-        val pensjonSak = hentAltPaaAktoerId(aktorId)
-        return hentKravFraKravHistorikk(saksId, pensjonSak, kravId)
-    }
-*/
 
     private fun hentKravFraKravHistorikk(saksId: String, pensjonSak: Pensjonsinformasjon, kravId: String ): String? {
         val sak = finnSak(saksId, pensjonSak) ?: return null
@@ -118,7 +110,7 @@ class PensjonsinformasjonClient(
     }
 
     fun hentAltPaaFNR(fnr: String, aktoerId: String): Pensjonsinformasjon {
-        require(fnr.isNotBlank()) { "AktoerId kan ikke være blank/tom"}
+        require(fnr.isNotBlank()) { "Fnr kan ikke være blank/tom"}
 
         return pensjoninformasjonHentAltPaaIdent.measure {
 
