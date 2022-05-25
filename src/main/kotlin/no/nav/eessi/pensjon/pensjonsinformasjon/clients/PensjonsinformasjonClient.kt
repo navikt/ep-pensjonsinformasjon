@@ -94,10 +94,12 @@ class PensjonsinformasjonClient(
         }
     }
 
+/*
     fun hentKravDatoFraAktor(aktorId: String, saksId: String, kravId: String) : String? {
         val pensjonSak = hentAltPaaAktoerId(aktorId)
         return hentKravFraKravHistorikk(saksId, pensjonSak, kravId)
     }
+*/
 
     private fun hentKravFraKravHistorikk(saksId: String, pensjonSak: Pensjonsinformasjon, kravId: String ): String? {
         val sak = finnSak(saksId, pensjonSak) ?: return null
