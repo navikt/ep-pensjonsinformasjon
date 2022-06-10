@@ -30,7 +30,7 @@ internal class PensjonsinformasjonClientTest{
         val mockResponseEntity = createResponseEntityFromJsonFile("classpath:full-generated-response.xml")
         every { mockrestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(String::class.java)) } returns mockResponseEntity
 
-        val response  = pensjonsinformasjonClient.hentAltPaaFNR("134432434", "34343434")
+        val response  = pensjonsinformasjonClient.hentAltPaaFNR("126842669854")
 
         assert(response.avdod != null)
         verify (exactly = 1) { mockrestTemplate.exchange("/fnr", HttpMethod.POST, any(), String::class.java) }

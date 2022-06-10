@@ -114,15 +114,18 @@ class PensjonsinformasjonClient(
         return kravHistorikk[0]?.mottattDato!!.simpleFormat()
     }
 
-    fun hentAltPaaFNR(fnr: String, aktoerId: String): Pensjonsinformasjon {
+    fun hentAltPaaFNR(fnr: String): Pensjonsinformasjon {
         require(fnr.isNotBlank()) { "Fnr kan ikke være blank/tom"}
 
         return pensjoninformasjonHentAltPaaIdent.measure {
 
             val requestBody = pensjonRequestBuilder.requestBodyForSakslisteFromAString()
-
             logger.debug("Requestbody:\n$requestBody")
-            logger.info("Henter pensjonsinformasjon for fnr med aktørid: $aktoerId")
+
+            if (fnr.length > 7) {
+                val obfuscateFnr = fnr.replaceRange(7, fnr.length, "★".repeat(fnr.length-7))
+                logger.info("Henter pensjonsinformasjon for fnr: $obfuscateFnr")
+            } else logger.info("Henter pensjonsinformasjon for fnr")
 
             val xmlResponse = doRequest(REQUESTPATH.FNR, fnr,  requestBody, pensjoninformasjonHentAltPaaIdentRequester)
             transform(xmlResponse)
