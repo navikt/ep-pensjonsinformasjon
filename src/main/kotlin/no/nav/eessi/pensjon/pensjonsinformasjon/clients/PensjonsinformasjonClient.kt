@@ -58,10 +58,17 @@ class PensjonsinformasjonClient(
         pensjoninformasjonAltPaaVedtakRequester = metricsHelper.init("PensjoninformasjonAltPaaVedtakRequester")
     }
 
+    @Deprecated("Utgår til fordel for hentKunSakTypeForFnr")
     fun hentKunSakType(sakId: String, aktoerid: String): Pensjontype {
         require(aktoerid.isNotBlank()) { "AktoerId kan ikke være blank/tom"}
         val sak = finnSak(sakId, hentAltPaaAktoerId(aktoerid)) ?: return Pensjontype(sakId, "")
             return Pensjontype(sakId, sak.sakType)
+    }
+
+    fun hentKunSakTypeForFnr(sakId: String, fnr: String): Pensjontype {
+        require(fnr.isNotBlank()) { "Fnr kan ikke være blank/tom"}
+        val sak = finnSak(sakId, hentAltPaaFNR(fnr)) ?: return Pensjontype(sakId, "")
+        return Pensjontype(sakId, sak.sakType)
     }
 
     @Deprecated("Replace with hentAltPaaFNR")
@@ -92,12 +99,16 @@ class PensjonsinformasjonClient(
             transform(xmlResponse)
         }
     }
-
+    @Deprecated("Utgår til fordel for hentKravDatoFraFnr")
     fun hentKravDatoFraAktor(aktorId: String, saksId: String, kravId: String) : String? {
         val pensjonSak = hentAltPaaAktoerId(aktorId)
         return hentKravFraKravHistorikk(saksId, pensjonSak, kravId)
     }
 
+    fun hentKravDatoFraFnr(fnr: String, saksId: String, kravId: String) : String? {
+        val pensjonSak = hentAltPaaFNR(fnr)
+        return hentKravFraKravHistorikk(saksId, pensjonSak, kravId)
+    }
     private fun hentKravFraKravHistorikk(saksId: String, pensjonSak: Pensjonsinformasjon, kravId: String ): String? {
         val sak = finnSak(saksId, pensjonSak) ?: return null
 

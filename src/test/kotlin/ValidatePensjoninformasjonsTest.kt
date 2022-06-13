@@ -55,7 +55,7 @@ class ValidatePensjoninformasjonsTest {
         val mockResponseEntity = createResponseEntityFromJsonFile("classpath:P2100-GJENLEV-REVURDERING-M-KRAVID-INNV.xml")
 
         every { mockrestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(String::class.java)) } returns mockResponseEntity
-        val data = pensjonsinformasjonClient.hentAltPaaAktoerId("1243")
+        val data = pensjonsinformasjonClient.hentAltPaaFNR("1243")
 
         val sak = finnSak("22915550", data)
 
@@ -71,7 +71,8 @@ class ValidatePensjoninformasjonsTest {
         val mockResponseEntity = createResponseEntityFromJsonFile("classpath:P2100-GJENLEV-REVURDERING-M-KRAVID-INNV.xml")
 
         every { mockrestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(String::class.java)) } returns mockResponseEntity
-        val sakType = pensjonsinformasjonClient.hentKunSakType("22915550", "1232")
+        val sakType = pensjonsinformasjonClient.hentKunSakTypeForFnr("22915550", "1232")
+//        val sakType = pensjonsinformasjonClient.hentKunSakType("22915550", "1232")
 
         assertEquals("22915550", sakType.sakId)
         assertEquals("UFOREP", sakType.sakType)
