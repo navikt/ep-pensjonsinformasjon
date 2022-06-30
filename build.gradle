@@ -46,7 +46,7 @@ dependencies {
     implementation("org.springframework:spring-web:5.3.+")
     implementation("org.springframework:spring-context:5.3.+")
 
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.6.10"))
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.7.0"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10")
     implementation("ch.qos.logback:logback-classic:1.2.11")
     implementation("io.micrometer:micrometer-registry-prometheus:1.4.2")
