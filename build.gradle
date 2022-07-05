@@ -64,16 +64,12 @@ dependencies {
     implementation("no.nav.tjenestespesifikasjoner:pensjonsinformasjon-v1-tjenestespesifikasjon:1.2021.01.21-11.34-02f5eb27bb76")
 
     testImplementation("javax.servlet:javax.servlet-api:4.0.1")
-    testImplementation("org.junit.platform:junit-platform-suite-api:1.7.1")
+    testImplementation(platform("org.junit:junit-bom:5.8.2"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.mockito:mockito-junit-jupiter:4.6.1")
     testImplementation("org.springframework:spring-test:5.3.20")
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
     testImplementation("io.mockk:mockk:1.12.4")
-    testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.21") {
-        exclude module: 'kotlin-test-js'
-        exclude module: 'kotlin-test-testng'
-    }
-
 }
 
 // https://github.com/researchgate/gradle-release
