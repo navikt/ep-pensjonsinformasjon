@@ -51,8 +51,8 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.2.11")
     implementation("io.micrometer:micrometer-registry-prometheus:1.4.2")
 
-    implementation("no.nav.eessi.pensjon:ep-metrics:0.4.25")
-    implementation("no.nav.eessi.pensjon:ep-logging:1.0.23")
+    implementation("no.nav.eessi.pensjon:ep-metrics:0.4.29")
+    implementation("no.nav.eessi.pensjon:ep-logging:1.0.24")
 
     implementation("com.sun.xml.ws:jaxws-ri:2.3.2")
     implementation('org.glassfish.jaxb:jaxb-xjc:2.3.2')
