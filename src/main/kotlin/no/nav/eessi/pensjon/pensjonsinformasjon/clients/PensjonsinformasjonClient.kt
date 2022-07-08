@@ -1,7 +1,6 @@
 package no.nav.eessi.pensjon.pensjonsinformasjon
 
 
-import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import no.nav.eessi.pensjon.metrics.MetricsHelper
 import no.nav.eessi.pensjon.pensjonsinformasjon.FinnSak.finnSak
 import no.nav.eessi.pensjon.pensjonsinformasjon.clients.PensjonRequestBuilder
@@ -33,7 +32,7 @@ import javax.xml.transform.stream.StreamSource
 class PensjonsinformasjonClient(
     private val pensjoninformasjonRestTemplate: RestTemplate,
     private val pensjonRequestBuilder: PensjonRequestBuilder,
-    @Autowired(required = false) private val metricsHelper: MetricsHelper = MetricsHelper(SimpleMeterRegistry())) {
+    @Autowired(required = false) private val metricsHelper: MetricsHelper = MetricsHelper.ForTest()) {
 
     private val logger = LoggerFactory.getLogger(PensjonsinformasjonClient::class.java)
 

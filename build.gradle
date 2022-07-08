@@ -5,8 +5,8 @@ buildscript {
 }
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.7.0"
-    id("org.jetbrains.kotlin.plugin.spring") version "1.7.0"
+    id("org.jetbrains.kotlin.jvm") version "${kotlinVersion}"
+    id("org.jetbrains.kotlin.plugin.spring") version "${kotlinVersion}"
     id("net.researchgate.release") version "3.0.0"
     id("com.adarshr.test-logger") version "3.2.0"
     id("com.github.ben-manes.versions") version "0.42.0"
@@ -44,19 +44,21 @@ repositories {
 
 dependencies {
 
-    // Spring-boot
-    implementation("org.springframework.boot:spring-boot-starter-web:2.6.5") {
+    // Spring-boot BOM-fil spesifiserer versjoner for Spring Boot-avhengigheter
+    implementation(platform("org.springframework.boot:spring-boot-dependencies:2.7.1"))
+    implementation("org.springframework.boot:spring-boot-starter-web") {
         exclude module: 'tomcat-embed-core'
     }
-    implementation("org.springframework:spring-web:5.3.20")
-    implementation("org.springframework:spring-context:5.3.20")
+    // Spring Framework BOM-fil overstyrer så vi får siste patch-versjon av Spring Framework
+    implementation(platform("org.springframework:spring-framework-bom:5.3.21"))
+    implementation("org.springframework:spring-web")
+    implementation("org.springframework:spring-context")
 
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:${kotlinVersion}"))
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
-    implementation("ch.qos.logback:logback-classic:1.2.11")
-    implementation("io.micrometer:micrometer-registry-prometheus:1.4.2")
 
-    implementation("no.nav.eessi.pensjon:ep-metrics:0.4.29")
+    implementation("ch.qos.logback:logback-classic:1.2.11")
+
+    implementation("no.nav.eessi.pensjon:ep-metrics:0.5.0")
     implementation("no.nav.eessi.pensjon:ep-logging:1.0.24")
 
     implementation("com.sun.xml.ws:jaxws-ri:2.3.2")
@@ -72,7 +74,7 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.8.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.mockito:mockito-junit-jupiter:4.6.1")
-    testImplementation("org.springframework:spring-test:5.3.20")
+    testImplementation("org.springframework:spring-test")
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
     testImplementation("io.mockk:mockk:1.12.4")
 }
