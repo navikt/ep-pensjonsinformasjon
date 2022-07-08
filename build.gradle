@@ -58,8 +58,8 @@ dependencies {
 
     implementation("ch.qos.logback:logback-classic:1.2.11")
 
-    implementation("no.nav.eessi.pensjon:ep-metrics:0.5.0")
-    implementation("no.nav.eessi.pensjon:ep-logging:1.0.24")
+    implementation("no.nav.eessi.pensjon:ep-metrics:0.5.1")
+    implementation("no.nav.eessi.pensjon:ep-logging:1.0.28")
 
     implementation("com.sun.xml.ws:jaxws-ri:2.3.2")
     implementation('org.glassfish.jaxb:jaxb-xjc:2.3.2')
