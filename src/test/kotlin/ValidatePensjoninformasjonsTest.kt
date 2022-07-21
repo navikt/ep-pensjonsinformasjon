@@ -1,9 +1,9 @@
 import io.mockk.every
 import io.mockk.mockk
 import no.nav.eessi.pensjon.pensjonsinformasjon.FinnSak.finnSak
-import no.nav.eessi.pensjon.pensjonsinformasjon.PensjonsinformasjonClient
 import no.nav.eessi.pensjon.pensjonsinformasjon.clients.PensjonRequestBuilder
-import no.nav.eessi.pensjon.pensjonsinformasjon.clients.simpleFormat
+import no.nav.eessi.pensjon.pensjonsinformasjon.clients.PensjonsinformasjonClient
+import no.nav.eessi.pensjon.pensjonsinformasjon.simpleFormat
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach

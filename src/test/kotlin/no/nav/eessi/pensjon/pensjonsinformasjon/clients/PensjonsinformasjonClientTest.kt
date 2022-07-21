@@ -3,7 +3,6 @@ package no.nav.eessi.pensjon.pensjonsinformasjon.clients
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import no.nav.eessi.pensjon.pensjonsinformasjon.PensjonsinformasjonClient
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpEntity

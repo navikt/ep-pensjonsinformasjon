@@ -1,5 +1,10 @@
 package no.nav.eessi.pensjon.pensjonsinformasjon
 
+import no.nav.eessi.pensjon.pensjonsinformasjon.models.EPSaktype
+import no.nav.eessi.pensjon.pensjonsinformasjon.models.KravArsak
+import no.nav.eessi.pensjon.pensjonsinformasjon.models.Kravstatus
+import no.nav.eessi.pensjon.pensjonsinformasjon.models.Kravtype
+import no.nav.eessi.pensjon.pensjonsinformasjon.models.Sakstatus
 import no.nav.pensjon.v1.kravhistorikk.V1KravHistorikk
 import no.nav.pensjon.v1.kravhistorikkliste.V1KravHistorikkListe
 import no.nav.pensjon.v1.sak.V1Sak

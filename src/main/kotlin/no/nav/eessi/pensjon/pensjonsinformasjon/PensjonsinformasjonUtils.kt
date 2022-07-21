@@ -1,4 +1,4 @@
-package no.nav.eessi.pensjon.pensjonsinformasjon.clients
+package no.nav.eessi.pensjon.pensjonsinformasjon
 
 import java.text.SimpleDateFormat
 import java.time.LocalDate

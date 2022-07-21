@@ -1,11 +1,9 @@
-package no.nav.eessi.pensjon.pensjonsinformasjon
+package no.nav.eessi.pensjon.pensjonsinformasjon.clients
 
 
 import no.nav.eessi.pensjon.metrics.MetricsHelper
 import no.nav.eessi.pensjon.pensjonsinformasjon.FinnSak.finnSak
-import no.nav.eessi.pensjon.pensjonsinformasjon.clients.PensjonRequestBuilder
-import no.nav.eessi.pensjon.pensjonsinformasjon.clients.simpleFormat
-import no.nav.eessi.pensjon.services.pensjonsinformasjon.Pensjontype
+import no.nav.eessi.pensjon.pensjonsinformasjon.models.Pensjontype
 import no.nav.pensjon.v1.pensjonsinformasjon.Pensjonsinformasjon
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
