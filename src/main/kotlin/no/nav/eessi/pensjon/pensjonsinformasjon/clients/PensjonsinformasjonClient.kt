@@ -1,9 +1,9 @@
 package no.nav.eessi.pensjon.pensjonsinformasjon.clients
 
-
 import no.nav.eessi.pensjon.metrics.MetricsHelper
 import no.nav.eessi.pensjon.pensjonsinformasjon.FinnSak.finnSak
 import no.nav.eessi.pensjon.pensjonsinformasjon.models.Pensjontype
+import no.nav.eessi.pensjon.pensjonsinformasjon.simpleFormat
 import no.nav.pensjon.v1.pensjonsinformasjon.Pensjonsinformasjon
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,7 +23,6 @@ import java.io.StringReader
 import javax.annotation.PostConstruct
 import javax.xml.bind.JAXBContext
 import javax.xml.transform.stream.StreamSource
-
 
 @Component
 @CacheConfig(cacheNames = ["PensjonsinformasjonClient"])
@@ -119,7 +118,7 @@ class PensjonsinformasjonClient(
             throw PensjoninformasjonException("KravHistorikkListe med har for mange krav")
         }
 
-        return kravHistorikk[0]?.mottattDato!!.simpleFormat()
+        return (kravHistorikk[0]?.mottattDato ?: return null).simpleFormat()
     }
 
     fun hentAltPaaFNR(fnr: String): Pensjonsinformasjon {
