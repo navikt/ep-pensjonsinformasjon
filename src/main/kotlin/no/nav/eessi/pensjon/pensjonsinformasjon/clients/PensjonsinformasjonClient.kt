@@ -57,6 +57,7 @@ class PensjonsinformasjonClient(
     @Deprecated("Utgår til fordel for hentKunSakTypeForFnr")
     fun hentKunSakType(sakId: String, aktoerid: String): Pensjontype {
         require(aktoerid.isNotBlank()) { "AktoerId kan ikke være blank/tom"}
+        @Suppress("DEPRECATION")
         val sak = finnSak(sakId, hentAltPaaAktoerId(aktoerid)) ?: return Pensjontype(sakId, "")
             return Pensjontype(sakId, sak.sakType)
     }
@@ -97,6 +98,7 @@ class PensjonsinformasjonClient(
     }
     @Deprecated("Utgår til fordel for hentKravDatoFraFnr")
     fun hentKravDatoFraAktor(aktorId: String, saksId: String, kravId: String) : String? {
+        @Suppress("DEPRECATION")
         val pensjonSak = hentAltPaaAktoerId(aktorId)
         return hentKravFraKravHistorikk(saksId, pensjonSak, kravId)
     }
