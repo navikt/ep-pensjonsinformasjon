@@ -47,7 +47,7 @@ repositories {
 dependencies {
 
     // Spring-boot BOM-fil spesifiserer versjoner for Spring Boot-avhengigheter
-    implementation(platform("org.springframework.boot:spring-boot-dependencies:2.7.2"))
+    implementation(platform("org.springframework.boot:spring-boot-dependencies:2.7.3"))
     implementation("org.springframework.boot:spring-boot-starter-web") {
         exclude module: 'tomcat-embed-core'
     }
