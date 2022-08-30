@@ -58,7 +58,7 @@ dependencies {
 
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:${kotlinVersion}"))
 
-    implementation("no.nav.eessi.pensjon:ep-metrics:0.5.10")
+    implementation("no.nav.eessi.pensjon:ep-metrics:0.5.11")
     implementation("no.nav.eessi.pensjon:ep-logging:1.0.39")
 
     implementation("com.sun.xml.ws:jaxws-ri:2.3.2")
