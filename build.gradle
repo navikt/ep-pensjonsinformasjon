@@ -1,51 +1,14 @@
-buildscript {
-    ext {
-        kotlinVersion = '1.7.10'
-    }
-}
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "${kotlinVersion}"
-    id("org.jetbrains.kotlin.plugin.spring") version "${kotlinVersion}"
-    id("net.researchgate.release") version "3.0.1"
-    id("com.adarshr.test-logger") version "3.2.0"
-    id("com.github.ben-manes.versions") version "0.42.0"
-    id("se.patrikerdes.use-latest-versions") version "0.2.18"
-    id("org.owasp.dependencycheck") version "7.1.2"
     id "org.openrepose.gradle.plugins.jaxb" version "2.5.0"
-    id("maven-publish")
-    id "org.sonarqube" version "3.4.0.2513"
-    id 'jacoco'
 }
+
+apply from: "https://raw.githubusercontent.com/navikt/ep-script-plugins/release-0.2.0/ep-module.gradle"
+apply from: "https://raw.githubusercontent.com/navikt/ep-script-plugins/release-0.2.0/ep-library.gradle"
 
 group = "no.nav.eessi.pensjon"
 
-java {
-    withJavadocJar()
-    withSourcesJar()
-}
-
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = "17"
-        allWarningsAsErrors = true
-    }
-}
-
-compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = "17"
-        allWarningsAsErrors = true
-    }
-}
-
-
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-
     // Spring-boot BOM-fil spesifiserer versjoner for Spring Boot-avhengigheter
     implementation(platform("org.springframework.boot:spring-boot-dependencies:2.7.3"))
     implementation("org.springframework.boot:spring-boot-starter-web") {
@@ -56,7 +19,6 @@ dependencies {
     implementation("org.springframework:spring-web")
     implementation("org.springframework:spring-context")
 
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:${kotlinVersion}"))
 
     implementation("no.nav.eessi.pensjon:ep-metrics:0.5.11")
     implementation("no.nav.eessi.pensjon:ep-logging:1.0.39")
@@ -81,75 +43,7 @@ dependencies {
 
 // https://github.com/researchgate/gradle-release
 release {
-    newVersionCommitMessage = "[Release Plugin] - next version commit: "
-    tagTemplate = "release-\${version}"
     git {
         requireBranch.set('master')
     }
-}
-
-// https://help.github.com/en/actions/language-and-framework-guides/publishing-java-packages-with-gradle#publishing-packages-to-github-packages
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
-
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = "https://maven.pkg.github.com/navikt/$rootProject.name"
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
-    }
-}
-
-// https://docs.gradle.org/current/userguide/jacoco_plugin.html
-jacoco {
-    toolVersion = "0.8.8"
-}
-
-jacocoTestReport {
-    reports {
-        xml.enabled true
-    }
-}
-
-tasks.sonarqube.dependsOn tasks["jacocoTestReport"]
-
-test {
-    useJUnitPlatform()
-}
-
-wrapper {
-    distributionType = Wrapper.DistributionType.ALL
-}
-
-repositories {
-    mavenCentral()
-
-    ["maven-release","ep-personoppslag","tjenestespesifikasjoner","ep-metrics"].each { repo ->
-        String token = System.getenv("GITHUB_TOKEN") ?: project.findProperty("gpr.key")
-        if (!token) throw new NullPointerException("Missing token, you have to set GITHUB_TOKEN or gpr.key, see README")
-        maven {
-            url = uri("https://maven.pkg.github.com/navikt/$repo")
-            credentials {
-                username = "token"
-                password = token
-            }
-        }
-    }
-}
-
-/* https://github.com/ben-manes/gradle-versions-plugin */
-dependencyUpdates {
-    rejectVersionIf {
-        ['alpha', 'beta', 'b', 'rc', 'cr', 'm', 'preview', 'pr']
-                .any { qualifier -> it.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/}
-    }
-    revision = 'release'
 }
