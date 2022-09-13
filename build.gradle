@@ -35,7 +35,7 @@ dependencies {
     testImplementation("javax.servlet:javax.servlet-api:4.0.1")
     testImplementation(platform("org.junit:junit-bom:5.9.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
-    testImplementation("org.mockito:mockito-junit-jupiter:4.7.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:4.8.0")
     testImplementation("org.springframework:spring-test")
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
     testImplementation("io.mockk:mockk:1.12.5")
