@@ -30,7 +30,7 @@ dependencies {
     //Jackson json
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.4")
 
-    implementation("no.nav.tjenestespesifikasjoner:pensjonsinformasjon-v1-tjenestespesifikasjon:1.2021.01.21-11.34-02f5eb27bb76")
+    implementation("no.nav.tjenestespesifikasjoner:pensjonsinformasjon-v1-tjenestespesifikasjon:2600.3800cc4")
 
     testImplementation("javax.servlet:javax.servlet-api:4.0.1")
     testImplementation(platform("org.junit:junit-bom:5.9.0"))
