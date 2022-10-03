@@ -44,6 +44,6 @@ dependencies {
 // https://github.com/researchgate/gradle-release
 release {
     git {
-        requireBranch.set('master')
+        requireBranch.set('main')
     }
 }
