@@ -40,10 +40,3 @@ dependencies {
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
     testImplementation("io.mockk:mockk:1.12.5")
 }
-
-// https://github.com/researchgate/gradle-release
-release {
-    git {
-        requireBranch.set('main')
-    }
-}
