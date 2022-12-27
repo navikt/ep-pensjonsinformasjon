@@ -28,7 +28,7 @@ dependencies {
     implementation('org.glassfish.jaxb:jaxb-runtime:2.3.2')
 
     //Jackson json
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.0")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.1")
 
     implementation("no.nav.tjenestespesifikasjoner:pensjonsinformasjon-v1-tjenestespesifikasjon:2606.1f6354e")
 
