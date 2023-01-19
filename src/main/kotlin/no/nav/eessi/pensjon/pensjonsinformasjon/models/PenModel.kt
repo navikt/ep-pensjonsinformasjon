@@ -1,6 +1,6 @@
 package no.nav.eessi.pensjon.pensjonsinformasjon.models
 
-enum class Kravtype {
+enum class PenKravtype {
     REVURD,
     F_BH_MED_UTL,
     FORSTEG_BH,

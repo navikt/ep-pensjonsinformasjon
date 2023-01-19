@@ -1,10 +1,7 @@
 package no.nav.eessi.pensjon.pensjonsinformasjon
 
-import no.nav.eessi.pensjon.pensjonsinformasjon.models.EPSaktype
-import no.nav.eessi.pensjon.pensjonsinformasjon.models.KravArsak
-import no.nav.eessi.pensjon.pensjonsinformasjon.models.Kravstatus
-import no.nav.eessi.pensjon.pensjonsinformasjon.models.Kravtype
-import no.nav.eessi.pensjon.pensjonsinformasjon.models.Sakstatus
+import no.nav.eessi.pensjon.pensjonsinformasjon.models.*
+import no.nav.eessi.pensjon.pensjonsinformasjon.models.PenKravtype.*
 import no.nav.pensjon.v1.kravhistorikk.V1KravHistorikk
 import no.nav.pensjon.v1.kravhistorikkliste.V1KravHistorikkListe
 import no.nav.pensjon.v1.sak.V1Sak
@@ -21,21 +18,20 @@ object KravHistorikkHelper {
     fun hentKravHistorikkForsteGangsBehandlingUtlandEllerForsteGang(kravHistorikkListe: V1KravHistorikkListe?, saktype: String?): V1KravHistorikk {
         //F_BH_MED_UTL
         if (EPSaktype.BARNEP.name == saktype) {
-            return hentKravHistorikkMedKravType(listOf(Kravtype.F_BH_MED_UTL.name, Kravtype.FORSTEG_BH.name, Kravtype.F_BH_BO_UTL.name), kravHistorikkListe)
+            return hentKravHistorikkMedKravType(listOf(F_BH_MED_UTL, FORSTEG_BH, F_BH_BO_UTL), kravHistorikkListe)
         }
-        return hentKravHistorikkMedKravType(listOf(Kravtype.F_BH_MED_UTL.name, Kravtype.FORSTEG_BH.name, Kravtype.F_BH_KUN_UTL.name), kravHistorikkListe)
+        return hentKravHistorikkMedKravType(listOf(F_BH_MED_UTL, FORSTEG_BH, F_BH_KUN_UTL), kravHistorikkListe)
     }
 
-    fun finnKravHistorikk(kravType: String, kravHistorikkListe: V1KravHistorikkListe?): List<V1KravHistorikk>? {
-        return sortertKravHistorikk(kravHistorikkListe)?.filter { kravType == it.kravType }
+    fun finnKravHistorikk(kravType: PenKravtype, kravHistorikkListe: V1KravHistorikkListe?): List<V1KravHistorikk>? {
+        return sortertKravHistorikk(kravHistorikkListe)?.filter { it.kravType == kravType.name }
     }
 
-    private fun hentKravHistorikkMedKravType(kravType: List<String>, kravHistorikkListe: V1KravHistorikkListe?): V1KravHistorikk {
+    private fun hentKravHistorikkMedKravType(kravType: List<PenKravtype>, kravHistorikkListe: V1KravHistorikkListe?): V1KravHistorikk {
         val sortList = sortertKravHistorikk(kravHistorikkListe)
         sortList?.forEach { kravHistorikk ->
-            logger.info("leter etter Kravtype: $kravType, fant ${kravHistorikk.kravType} med dato i ${kravHistorikk.virkningstidspunkt}")
-            if (kravType.contains(kravHistorikk.kravType)) {
-                logger.info("Fant Kravhistorikk med $kravType")
+            if (kravHistorikk.kravType in kravType.map { it.name } ) {
+                logger.info("Fant ${kravHistorikk.kravType} med virkningstidspunkt: ${kravHistorikk.virkningstidspunkt}")
                 return kravHistorikk
             }
         }
@@ -78,11 +74,11 @@ object KravHistorikkHelper {
         return V1KravHistorikk()
     }
 
-    fun hentKravHistorikkMedValgtKravType(kravHistorikkListe: V1KravHistorikkListe?, kravtype: Kravtype): V1KravHistorikk? {
+    fun hentKravHistorikkMedValgtKravType(kravHistorikkListe: V1KravHistorikkListe?, penKravtype: PenKravtype): V1KravHistorikk? {
         val sortList = sortertKravHistorikk(kravHistorikkListe)
         if (sortList == null || sortList.size > 1) return null
-        logger.debug("leter etter kravtype: $kravtype")
-        return sortList.firstOrNull { kravhist -> kravhist.kravType == kravtype.name}
+        logger.debug("leter etter kravtype: $penKravtype")
+        return sortList.firstOrNull { kravhist -> kravhist.kravType == penKravtype.name}
             .also { logger.debug("fant ${it?.kravType} med kravÅrsak: ${it?.kravArsak} med virkningstidspunkt dato : ${it?.virkningstidspunkt}") }
 
     }
@@ -92,7 +88,7 @@ object KravHistorikkHelper {
             val gjenLevKravarsak = hentKravhistorikkForGjenlevende(pensak?.kravHistorikkListe)
             if (gjenLevKravarsak != null) return gjenLevKravarsak
 
-            val kravKunUtland = hentKravHistorikkMedValgtKravType(pensak?.kravHistorikkListe, Kravtype.F_BH_KUN_UTL)
+            val kravKunUtland = hentKravHistorikkMedValgtKravType(pensak?.kravHistorikkListe, F_BH_KUN_UTL)
             if (kravKunUtland != null) return  kravKunUtland
 
             logger.info("Sakstatus: ${pensak?.status},sakstype: ${pensak?.sakType}")
