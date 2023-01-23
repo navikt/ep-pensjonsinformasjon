@@ -28,7 +28,10 @@ enum class EPSaktype {
     ALDER,
     UFOREP,
     BARNEP,
-    GJENLEV;
+    GJENLEV,
+    OMSORG,
+    GENRL
+    ;
 }
 
 enum class Sakstatus(val value: String) {
