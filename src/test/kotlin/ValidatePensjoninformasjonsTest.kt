@@ -16,18 +16,14 @@ import org.springframework.web.client.RestTemplate
 
 class ValidatePensjoninformasjonsTest {
 
-
     private var mockrestTemplate: RestTemplate = mockk()
 
     private lateinit var pensjonsinformasjonClient: PensjonsinformasjonClient
-
     @BeforeEach
     fun setup() {
         pensjonsinformasjonClient = PensjonsinformasjonClient(mockrestTemplate, PensjonRequestBuilder())
         pensjonsinformasjonClient.initMetrics()
     }
-
-
     @Test
     fun `Sjekker om pensjoninformasjon XmlCalendar kan være satt eller null sette simpleFormat`() {
         val mockResponseEntity = createResponseEntityFromJsonFile("classpath:full-generated-response.xml")
@@ -47,9 +43,7 @@ class ValidatePensjoninformasjonsTest {
 
         assertEquals("2008-02-06", result.fom.simpleFormat())
         assertEquals(null, result.tom?.simpleFormat())
-
     }
-
     @Test
     fun `Sjekker om pensjoninformasjon plukk ut sak fra en liste over brukersaker`() {
         val mockResponseEntity = createResponseEntityFromJsonFile("classpath:P2100-GJENLEV-REVURDERING-M-KRAVID-INNV.xml")
@@ -68,26 +62,20 @@ class ValidatePensjoninformasjonsTest {
 
     @Test
     fun `Sjekker pensjonsinformasjon kunsaktype validerer`() {
-        val mockResponseEntity = createResponseEntityFromJsonFile("classpath:P2100-GJENLEV-REVURDERING-M-KRAVID-INNV.xml")
+        val mockResponseEntity = javaClass.getResource("P2100-GJENLEV-REVURDERING-M-KRAVID-INNV.xml")!!.readText()
 
-        every { mockrestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(String::class.java)) } returns mockResponseEntity
+        every { mockrestTemplate.exchange(any<String>(), any(), any<HttpEntity<Unit>>(), eq(String::class.java)) } returns ResponseEntity(mockResponseEntity, HttpStatus.OK)
         val sakType = pensjonsinformasjonClient.hentKunSakTypeForFnr("22915550", "1232")
-//        val sakType = pensjonsinformasjonClient.hentKunSakType("22915550", "1232")
 
         assertEquals("22915550", sakType.sakId)
         assertEquals("UFOREP", sakType.sakType)
     }
-
     private fun mockAnyRequest(kravLokasjon : String) {
         val mockResponseEntity = createResponseEntityFromJsonFile(kravLokasjon)
         every { mockrestTemplate.exchange(any<String>(), any(), any(), eq(String::class.java)) } returns mockResponseEntity
     }
-
-
     private fun createResponseEntityFromJsonFile(filePath: String, httpStatus: HttpStatus = HttpStatus.OK): ResponseEntity<String?> {
         val mockResponseString = ResourceUtils.getFile(filePath).readText()
         return ResponseEntity(mockResponseString, httpStatus)
     }
-
-
 }
