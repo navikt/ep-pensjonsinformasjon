@@ -14,6 +14,8 @@ dependencies {
     implementation("org.springframework:spring-web")
     implementation("org.springframework:spring-context")
 
+    implementation("jakarta.annotation:jakarta.annotation-api:2.1.0")
+
     implementation("no.nav.eessi.pensjon:ep-metrics:1.0.12")
     implementation("no.nav.eessi.pensjon:ep-logging:1.1.17")
 

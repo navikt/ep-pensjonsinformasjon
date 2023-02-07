@@ -1,5 +1,6 @@
 package no.nav.eessi.pensjon.pensjonsinformasjon.clients
 
+import jakarta.annotation.PostConstruct
 import no.nav.eessi.pensjon.metrics.MetricsHelper
 import no.nav.eessi.pensjon.pensjonsinformasjon.FinnSak.finnSak
 import no.nav.eessi.pensjon.pensjonsinformasjon.models.Pensjontype
@@ -20,7 +21,6 @@ import org.springframework.web.client.RestTemplate
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.util.UriComponentsBuilder
 import java.io.StringReader
-import javax.annotation.PostConstruct
 import javax.xml.bind.JAXBContext
 import javax.xml.transform.stream.StreamSource
 
