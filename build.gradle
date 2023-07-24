@@ -25,7 +25,7 @@ dependencies {
     //Jackson json
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2")
 
-    implementation("no.nav.tjenestespesifikasjoner:pensjonsinformasjon-v1-tjenestespesifikasjon:2616.df1f47c")
+    implementation("no.nav.tjenestespesifikasjoner:pensjonsinformasjon-v1-tjenestespesifikasjon:2618.0448179")
 
     implementation("ch.qos.logback:logback-classic:1.4.8")
 
