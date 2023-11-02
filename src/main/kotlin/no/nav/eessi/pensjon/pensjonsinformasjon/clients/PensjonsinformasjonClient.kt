@@ -1,6 +1,5 @@
 package no.nav.eessi.pensjon.pensjonsinformasjon.clients
 
-import jakarta.annotation.PostConstruct
 import no.nav.eessi.pensjon.metrics.MetricsHelper
 import no.nav.eessi.pensjon.pensjonsinformasjon.FinnSak.finnSak
 import no.nav.eessi.pensjon.pensjonsinformasjon.models.Pensjontype
@@ -30,6 +29,9 @@ class PensjonsinformasjonClient(
     private val pensjoninformasjonRestTemplate: RestTemplate,
     private val pensjonRequestBuilder: PensjonRequestBuilder,
     @Autowired(required = false) private val metricsHelper: MetricsHelper = MetricsHelper.ForTest()) {
+    init {
+        initMetrics()
+    }
 
     private val logger = LoggerFactory.getLogger(PensjonsinformasjonClient::class.java)
 
@@ -45,7 +47,6 @@ class PensjonsinformasjonClient(
         AKTOR("/aktor");
     }
 
-    @PostConstruct
     fun initMetrics() {
         pensjoninformasjonHentKunSakType = metricsHelper.init("PensjoninformasjonHentKunSakType")
         pensjoninformasjonHentAltPaaIdent = metricsHelper.init("PensjoninformasjonHentAltPaaIdent")
