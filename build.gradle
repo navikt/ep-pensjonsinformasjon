@@ -22,7 +22,7 @@ dependencies {
     implementation("org.springframework:spring-context")
 
     implementation("no.nav.eessi.pensjon:ep-metrics:2.0.46")
-    implementation("no.nav.eessi.pensjon:ep-logging:2.1.41")
+    implementation("no.nav.eessi.pensjon:ep-logging:2.1.42")
 
     //Jackson json
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.16.0")
