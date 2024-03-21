@@ -48,6 +48,15 @@ object KravHistorikkHelper {
             return null
     }
 
+    fun hentKravhistorikkForGjenlevendeOgNySoknad(kravHistorikkListe: V1KravHistorikkListe?): V1KravHistorikk? {
+        val kravHistorikk = kravHistorikkListe?.kravHistorikkListe?.filter { krav -> krav.kravArsak == KravArsak.GJNL_SKAL_VURD.name || krav.kravArsak == KravArsak.TILST_DOD.name || krav.kravArsak == KravArsak.NY_SOKNAD.name }
+        if (kravHistorikk?.isNotEmpty() == true) {
+            return kravHistorikk.first()
+        }
+        logger.warn("Fant ikke Kravhistorikk med bruk av kravårsak: ${KravArsak.GJNL_SKAL_VURD.name} , ${KravArsak.TILST_DOD.name} eller ${KravArsak.NY_SOKNAD.name} fra kravliste: \n${kravHistorikkListe.toString()}")
+        return null
+    }
+
     fun hentKravHistorikkMedKravStatusTilBehandling(kravHistorikkListe: V1KravHistorikkListe?): V1KravHistorikk {
         val sortList = sortertKravHistorikk(kravHistorikkListe)
         sortList?.forEach {
