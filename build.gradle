@@ -30,7 +30,7 @@ dependencies {
     //pensjon og jaxb
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
     implementation('org.glassfish.jaxb:jaxb-runtime:2.3.3')
-    implementation("no.nav.tjenestespesifikasjoner:pensjonsinformasjon-v1-tjenestespesifikasjon:2618.0448179")
+    implementation("no.nav.tjenestespesifikasjoner:pensjonsinformasjon-v1-tjenestespesifikasjon:2633.1685ed5")
 
     implementation("ch.qos.logback:logback-classic:1.5.6")
 
