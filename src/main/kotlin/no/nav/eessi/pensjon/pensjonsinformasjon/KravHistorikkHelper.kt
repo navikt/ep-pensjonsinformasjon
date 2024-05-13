@@ -32,7 +32,7 @@ object KravHistorikkHelper {
         sortList?.forEach { kravHistorikk ->
             if (kravHistorikk.kravType in kravType.map { it.name } ) {
                 logger.info("Fant ${kravHistorikk.kravType} med virkningstidspunkt: ${kravHistorikk.virkningstidspunkt}")
-                return kravHistorikk
+                return kravHistorikk.also { logger.info("Kravtypen for kravhistorikk: ${kravHistorikk.kravType}") }
             }
         }
         logger.warn("Fant ikke noe Kravhistorikk. med $kravType. Grunnet utsending kun utland mangler vilkårprøving/vedtak. følger ikke normal behandling")
