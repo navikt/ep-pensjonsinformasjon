@@ -1,11 +1,11 @@
 package no.nav.eessi.pensjon.pensjonsinformasjon.models
 
 enum class PenKravtype {
-    REVURD,
-    F_BH_MED_UTL,
-    FORSTEG_BH,
-    F_BH_BO_UTL,
-    F_BH_KUN_UTL,
+    FORSTEG_BH,    //Førstegangsbehandling Norge
+    REVURD,        //Revurdering
+    F_BH_MED_UTL,  //Førstegangsbehandling Norge/utland
+    F_BH_BO_UTL,   //Førstegangsbehandling bosatt utland
+    F_BH_KUN_UTL,  //Førstegangsbehandling kun utland
 
 }
 
