@@ -15,13 +15,8 @@ object KravHistorikkHelper {
         return kravHistorikkListe?.kravHistorikkListe?.sortedBy { it.mottattDato.toGregorianCalendar() }
     }
 
-    fun hentKravHistorikkForsteGangsBehandlingUtlandEllerForsteGang(kravHistorikkListe: V1KravHistorikkListe?, saktype: String?): V1KravHistorikk {
-        //F_BH_MED_UTL
-        if (EPSaktype.BARNEP.name == saktype) {
-            return hentKravHistorikkMedKravType(listOf(F_BH_MED_UTL, FORSTEG_BH, F_BH_BO_UTL), kravHistorikkListe)
-        }
-        return hentKravHistorikkMedKravType(listOf(F_BH_MED_UTL, FORSTEG_BH, F_BH_KUN_UTL), kravHistorikkListe)
-    }
+    fun hentKravHistorikkForsteGangsBehandlingUtlandEllerForsteGang(kravHistorikkListe: V1KravHistorikkListe?): V1KravHistorikk =
+        hentKravHistorikkMedKravType(listOf(F_BH_MED_UTL, F_BH_KUN_UTL, REVURD, F_BH_BO_UTL), kravHistorikkListe)
 
     fun finnKravHistorikk(kravType: PenKravtype, kravHistorikkListe: V1KravHistorikkListe?): List<V1KravHistorikk>? {
         return sortertKravHistorikk(kravHistorikkListe)?.filter { it.kravType == kravType.name }
@@ -105,7 +100,7 @@ object KravHistorikkHelper {
             return when (Sakstatus.byValue(pensak?.status!!)) {
                 Sakstatus.TIL_BEHANDLING -> hentKravHistorikkMedKravStatusTilBehandling(pensak.kravHistorikkListe)
                 Sakstatus.AVSL -> hentKravHistorikkMedKravStatusAvslag(pensak.kravHistorikkListe)
-                else -> hentKravHistorikkForsteGangsBehandlingUtlandEllerForsteGang(pensak.kravHistorikkListe, pensak.sakType)
+                else -> hentKravHistorikkForsteGangsBehandlingUtlandEllerForsteGang(pensak.kravHistorikkListe)
             }
 
         } catch (ex: Exception) {
