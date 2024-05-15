@@ -21,7 +21,7 @@ dependencies {
     implementation("org.springframework:spring-web")
     implementation("org.springframework:spring-context")
 
-    implementation("no.nav.eessi.pensjon:ep-metrics:2.0.62")
+    implementation("no.nav.eessi.pensjon:ep-metrics:2.0.64")
     implementation("no.nav.eessi.pensjon:ep-logging:2.1.63")
 
     //Jackson json
