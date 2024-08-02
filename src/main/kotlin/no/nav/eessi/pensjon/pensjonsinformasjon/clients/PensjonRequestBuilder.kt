@@ -22,6 +22,7 @@ class PensjonRequestBuilder {
                     <xs:import namespace="http://nav.no/pensjon/v1/inngangOgEksport" schemaLocation="v1.InngangOgEksport.xsd"/>
                     <xs:import namespace="http://nav.no/pensjon/v1/avdod" schemaLocation="v1.Avdod.xsd"/>
                     <xs:import namespace="http://nav.no/pensjon/v1/brukersSakerListe" schemaLocation="v1.BrukersSakerListe.xsd"/>
+                    <xs:import namespace="http://nav.no/pensjon/v1/uforeopplysninger" schemaLocation="v1.Uforeopplysninger.xsd"/>
                     <xs:import namespace="http://nav.no/pensjon/v1/brukersBarnListe" schemaLocation="v1.BrukersBarnListe.xsd"/>
                     <xs:import namespace="http://nav.no/pensjon/v1/kravHistorikkListe" schemaLocation="v1.KravHistorikkListe.xsd"/>
                     <xs:import namespace="http://nav.no/pensjon/v1/ektefellePartnerSamboerListe" schemaLocation="v1.EktefellePartnerSamboerListe.xsd"/>
@@ -33,6 +34,7 @@ class PensjonRequestBuilder {
                             <xs:element minOccurs="0" name="person" type="person:v1.Person"/>
                             <xs:element minOccurs="0" name="sakAlder" type="sakAlder:v1.SakAlder"/>
                             <xs:element minOccurs="0" name="trygdeavtale" type="trygdeavtale:v1.Trygdeavtale"/>
+                            <xs:element minOccurs="0" name="uforeopplysninger" type="uforeopplysninger:v1.Uforeopplysninger"/>                            
                             <xs:element minOccurs="0" name="trygdetidAvdodFarListe" type="trygdetidAvdodFarListe:v1.TrygdetidAvdodFarListe"/>
                             <xs:element minOccurs="0" name="trygdetidAvdodListe" type="trygdetidAvdodListe:v1.TrygdetidAvdodListe"/>
                             <xs:element minOccurs="0" name="trygdetidAvdodMorListe" type="trygdetidAvdodMorListe:v1.TrygdetidAvdodMorListe"/>
