@@ -31,6 +31,7 @@ class PensjonRequestBuilder {
                     <xs:import namespace="http://nav.no/pensjon/v1/trygdetidAvdodMorListe" schemaLocation="v1.TrygdetidAvdodMorListe.xsd"/>
                     <xs:import namespace="http://nav.no/pensjon/v1/trygdetidAvdodListe" schemaLocation="v1.TrygdetidAvdodListe.xsd"/>
                     <xs:import namespace="http://nav.no/pensjon/v1/trygdetidAvdodFarListe" schemaLocation="v1.TrygdetidAvdodFarListe.xsd"/>
+                    <xs:import namespace="http://nav.no/pensjon/v1/beregningsperiodeList" schemaLocation="v1.BeregningsperiodeList.xsd"/>
                     <xs:import namespace="http://nav.no/pensjon/v1/trygdeavtale" schemaLocation="v1.Trygdeavtale.xsd"/>
                     <xs:import namespace="http://nav.no/pensjon/v1/sakAlder" schemaLocation="v1.SakAlder.xsd"/>
                     <xs:import namespace="http://nav.no/pensjon/v1/person" schemaLocation="v1.Person.xsd"/>
