@@ -8,22 +8,7 @@ class PensjonRequestBuilder {
     fun requestBodyForVedtakFromAString() =
             """
                 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-                <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-                xmlns="http://nav.no/pensjon/v1/pensjonsinformasjon" 
-                xmlns:avdod="http://nav.no/pensjon/v1/avdod" 
-                xmlns:brukersBarnListe="http://nav.no/pensjon/v1/brukersBarnListe" 
-                xmlns:brukersSakerListe="http://nav.no/pensjon/v1/brukersSakerListe" 
-                xmlns:ektefellePartnerSamboerListe="http://nav.no/pensjon/v1/ektefellePartnerSamboerListe" 
-                xmlns:inngangOgEksport="http://nav.no/pensjon/v1/inngangOgEksport" 
-                xmlns:kravHistorikkListe="http://nav.no/pensjon/v1/kravHistorikkListe" 
-                xmlns:person="http://nav.no/pensjon/v1/person" 
-                xmlns:sakAlder="http://nav.no/pensjon/v1/sakAlder" 
-                xmlns:trygdeavtale="http://nav.no/pensjon/v1/trygdeavtale" 
-                xmlns:trygdetidAvdodFarListe="http://nav.no/pensjon/v1/trygdetidAvdodFarListe" 
-                xmlns:trygdetidAvdodListe="http://nav.no/pensjon/v1/trygdetidAvdodListe" xmlns:trygdetidAvdodMorListe="http://nav.no/pensjon/v1/trygdetidAvdodMorListe" 
-                xmlns:trygdetidListe="http://nav.no/pensjon/v1/trygdetidListe" xmlns:vedtak="http://nav.no/pensjon/v1/vedtak" 
-                xmlns:vilkarsvurderingListe="http://nav.no/pensjon/v1/vilkarsvurderingListe" 
-                xmlns:ytelsePerMaanedListe="http://nav.no/pensjon/v1/ytelsePerMaanedListe" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://nav.no/pensjon/v1/pensjonsinformasjon">
+                <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://nav.no/pensjon/v1/pensjonsinformasjon" xmlns:avdod="http://nav.no/pensjon/v1/avdod" xmlns:brukersBarnListe="http://nav.no/pensjon/v1/brukersBarnListe" xmlns:brukersSakerListe="http://nav.no/pensjon/v1/brukersSakerListe" xmlns:ektefellePartnerSamboerListe="http://nav.no/pensjon/v1/ektefellePartnerSamboerListe" xmlns:inngangOgEksport="http://nav.no/pensjon/v1/inngangOgEksport" xmlns:kravHistorikkListe="http://nav.no/pensjon/v1/kravHistorikkListe" xmlns:person="http://nav.no/pensjon/v1/person" xmlns:sakAlder="http://nav.no/pensjon/v1/sakAlder" xmlns:trygdeavtale="http://nav.no/pensjon/v1/trygdeavtale" xmlns:trygdetidAvdodFarListe="http://nav.no/pensjon/v1/trygdetidAvdodFarListe" xmlns:trygdetidAvdodListe="http://nav.no/pensjon/v1/trygdetidAvdodListe" xmlns:trygdetidAvdodMorListe="http://nav.no/pensjon/v1/trygdetidAvdodMorListe" xmlns:trygdetidListe="http://nav.no/pensjon/v1/trygdetidListe" xmlns:vedtak="http://nav.no/pensjon/v1/vedtak" xmlns:vilkarsvurderingListe="http://nav.no/pensjon/v1/vilkarsvurderingListe" xmlns:ytelsePerMaanedListe="http://nav.no/pensjon/v1/ytelsePerMaanedListe" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://nav.no/pensjon/v1/pensjonsinformasjon">
                     <xs:import namespace="http://nav.no/pensjon/v1/ytelsePerMaanedListe" schemaLocation="v1.YtelsePerMaanedListe.xsd"/>
                     <xs:import namespace="http://nav.no/pensjon/v1/vilkarsvurderingListe" schemaLocation="v1.VilkarsvurderingListe.xsd"/>
                     <xs:import namespace="http://nav.no/pensjon/v1/vedtak" schemaLocation="v1.Vedtak.xsd"/>
@@ -47,7 +32,6 @@ class PensjonRequestBuilder {
                             <xs:element minOccurs="0" name="inngangOgEksport" type="inngangOgEksport:v1.InngangOgEksport"/>
                             <xs:element minOccurs="0" name="person" type="person:v1.Person"/>
                             <xs:element minOccurs="0" name="sakAlder" type="sakAlder:v1.SakAlder"/>
-                            <xs:element minOccurs="0" name="beregningsperiodeList" type="beregningsperiode:v1.BeregningsperiodeList"/>
                             <xs:element minOccurs="0" name="trygdeavtale" type="trygdeavtale:v1.Trygdeavtale"/>
                             <xs:element minOccurs="0" name="trygdetidAvdodFarListe" type="trygdetidAvdodFarListe:v1.TrygdetidAvdodFarListe"/>
                             <xs:element minOccurs="0" name="trygdetidAvdodListe" type="trygdetidAvdodListe:v1.TrygdetidAvdodListe"/>
@@ -65,23 +49,7 @@ class PensjonRequestBuilder {
     fun requestBodyForSakslisteFromAString() =
             """
                 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-                <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://nav.no/pensjon/v1/pensjonsinformasjon" 
-                xmlns:avdod="http://nav.no/pensjon/v1/avdod" 
-                xmlns:brukersBarnListe="http://nav.no/pensjon/v1/brukersBarnListe" 
-                xmlns:brukersSakerListe="http://nav.no/pensjon/v1/brukersSakerListe" 
-                xmlns:ektefellePartnerSamboerListe="http://nav.no/pensjon/v1/ektefellePartnerSamboerListe" 
-                xmlns:inngangOgEksport="http://nav.no/pensjon/v1/inngangOgEksport" 
-                xmlns:kravHistorikkListe="http://nav.no/pensjon/v1/kravHistorikkListe" 
-                xmlns:person="http://nav.no/pensjon/v1/person" 
-                xmlns:sakAlder="http://nav.no/pensjon/v1/sakAlder" 
-                xmlns:trygdeavtale="http://nav.no/pensjon/v1/trygdeavtale" 
-                xmlns:trygdetidAvdodFarListe="http://nav.no/pensjon/v1/trygdetidAvdodFarListe" 
-                xmlns:trygdetidAvdodListe="http://nav.no/pensjon/v1/trygdetidAvdodListe" 
-                xmlns:trygdetidAvdodMorListe="http://nav.no/pensjon/v1/trygdetidAvdodMorListe" 
-                xmlns:trygdetidListe="http://nav.no/pensjon/v1/trygdetidListe" 
-                xmlns:vedtak="http://nav.no/pensjon/v1/vedtak" 
-                xmlns:vilkarsvurderingListe="http://nav.no/pensjon/v1/vilkarsvurderingListe" 
-                xmlns:ytelsePerMaanedListe="http://nav.no/pensjon/v1/ytelsePerMaanedListe" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://nav.no/pensjon/v1/pensjonsinformasjon">
+                <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://nav.no/pensjon/v1/pensjonsinformasjon" xmlns:avdod="http://nav.no/pensjon/v1/avdod" xmlns:brukersBarnListe="http://nav.no/pensjon/v1/brukersBarnListe" xmlns:brukersSakerListe="http://nav.no/pensjon/v1/brukersSakerListe" xmlns:ektefellePartnerSamboerListe="http://nav.no/pensjon/v1/ektefellePartnerSamboerListe" xmlns:inngangOgEksport="http://nav.no/pensjon/v1/inngangOgEksport" xmlns:kravHistorikkListe="http://nav.no/pensjon/v1/kravHistorikkListe" xmlns:person="http://nav.no/pensjon/v1/person" xmlns:sakAlder="http://nav.no/pensjon/v1/sakAlder" xmlns:trygdeavtale="http://nav.no/pensjon/v1/trygdeavtale" xmlns:trygdetidAvdodFarListe="http://nav.no/pensjon/v1/trygdetidAvdodFarListe" xmlns:trygdetidAvdodListe="http://nav.no/pensjon/v1/trygdetidAvdodListe" xmlns:trygdetidAvdodMorListe="http://nav.no/pensjon/v1/trygdetidAvdodMorListe" xmlns:trygdetidListe="http://nav.no/pensjon/v1/trygdetidListe" xmlns:vedtak="http://nav.no/pensjon/v1/vedtak" xmlns:vilkarsvurderingListe="http://nav.no/pensjon/v1/vilkarsvurderingListe" xmlns:ytelsePerMaanedListe="http://nav.no/pensjon/v1/ytelsePerMaanedListe" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://nav.no/pensjon/v1/pensjonsinformasjon">
                     <xs:import namespace="http://nav.no/pensjon/v1/ytelsePerMaanedListe" schemaLocation="v1.YtelsePerMaanedListe.xsd"/>
                     <xs:import namespace="http://nav.no/pensjon/v1/vilkarsvurderingListe" schemaLocation="v1.VilkarsvurderingListe.xsd"/>
                     <xs:import namespace="http://nav.no/pensjon/v1/vedtak" schemaLocation="v1.Vedtak.xsd"/>
