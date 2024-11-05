@@ -1,6 +1,7 @@
 buildscript {
     ext {
         kotlinVersion = '2.0.21'
+        jacksonModuleKotlinVersion = '2.18.1'
     }
 }
 
@@ -24,8 +25,7 @@ dependencies {
     implementation("no.nav.eessi.pensjon:ep-metrics:2.0.89")
     implementation("no.nav.eessi.pensjon:ep-logging:2.1.87")
 
-    //Jackson json
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.18.0")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${jacksonModuleKotlinVersion}")
 
     //pensjon og jaxb
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
