@@ -22,7 +22,7 @@ dependencies {
     implementation("org.springframework:spring-web")
     implementation("org.springframework:spring-context")
 
-    implementation("no.nav.eessi.pensjon:ep-metrics:2.0.89")
+    implementation("no.nav.eessi.pensjon:ep-metrics:2.0.94")
     implementation("no.nav.eessi.pensjon:ep-logging:2.1.94")
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${jacksonModuleKotlinVersion}")
