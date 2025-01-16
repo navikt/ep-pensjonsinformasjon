@@ -54,7 +54,7 @@ compileTestKotlin {
 
 test {
     useJUnitPlatform()
-    failFast = true
+    failFast = false
     testlogger {
         theme 'mocha'               // task level
         showFullStackTraces true
