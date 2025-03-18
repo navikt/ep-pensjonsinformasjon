@@ -31,7 +31,7 @@ dependencies {
     implementation('org.glassfish.jaxb:jaxb-runtime:2.3.3')
     implementation("no.nav.tjenestespesifikasjoner:pensjonsinformasjon-v1-tjenestespesifikasjon:2643.2f3e8e9")
 
-    implementation("ch.qos.logback:logback-classic:1.5.17")
+    implementation("ch.qos.logback:logback-classic:1.5.18")
 
     
     testImplementation("org.junit.jupiter:junit-jupiter:5.12.0")
