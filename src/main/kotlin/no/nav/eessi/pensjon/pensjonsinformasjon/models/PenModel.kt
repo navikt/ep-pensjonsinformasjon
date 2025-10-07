@@ -5,7 +5,8 @@ enum class PenKravtype {
     REVURD,        //Revurdering
     F_BH_MED_UTL,  //Førstegangsbehandling Norge/utland
     F_BH_BO_UTL,   //Førstegangsbehandling bosatt utland
-    F_BH_KUN_UTL,  //Førstegangsbehandling kun utland
+    F_BH_KUN_UTL,  //Førstegangsbehandling kun utland,
+    SLUTT_BH_UTL   //Sluttbehandling utland
 
 }
 
