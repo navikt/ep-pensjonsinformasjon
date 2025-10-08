@@ -16,7 +16,7 @@ object KravHistorikkHelper {
     }
 
     fun hentKravHistorikkForsteGangsBehandlingUtlandEllerForsteGang(kravHistorikkListe: V1KravHistorikkListe?): V1KravHistorikk =
-        hentKravHistorikkMedKravType(listOf(F_BH_MED_UTL, F_BH_KUN_UTL, REVURD, F_BH_BO_UTL), kravHistorikkListe)
+        hentKravHistorikkMedKravType(listOf(F_BH_MED_UTL, F_BH_KUN_UTL, REVURD, F_BH_BO_UTL, SLUTT_BH_UTL), kravHistorikkListe)
 
     fun finnKravHistorikk(kravType: PenKravtype, kravHistorikkListe: V1KravHistorikkListe?): List<V1KravHistorikk>? {
         return sortertKravHistorikk(kravHistorikkListe)?.filter { it.kravType == kravType.name }
@@ -24,7 +24,13 @@ object KravHistorikkHelper {
 
     private fun hentKravHistorikkMedKravType(kravType: List<PenKravtype>, kravHistorikkListe: V1KravHistorikkListe?): V1KravHistorikk {
         val sortList = sortertKravHistorikk(kravHistorikkListe)
-        sortList?.forEach { kravHistorikk ->
+        val sortListFraKravIndex = sortList?.sortedBy { kravType.indexOfFirst { type -> type.name == it.kravType } }
+
+        if (sortListFraKravIndex != null && sortListFraKravIndex.size > 1) {
+            logger.warn("Listen med krav er større enn én. Krav: {${sortList.size}")
+        }
+
+        sortListFraKravIndex?.forEach { kravHistorikk ->
             if (kravHistorikk.kravType in kravType.map { it.name } ) {
                 logger.info("Fant ${kravHistorikk.kravType} med virkningstidspunkt: ${kravHistorikk.virkningstidspunkt}")
                 return kravHistorikk
