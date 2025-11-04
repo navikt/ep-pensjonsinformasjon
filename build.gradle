@@ -24,7 +24,7 @@ dependencies {
     implementation("no.nav.eessi.pensjon:ep-metrics:2.1.15")
     implementation("no.nav.eessi.pensjon:ep-logging:2.3.19")
 
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.20.0")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.20.1")
 
     //pensjon og jaxb
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
