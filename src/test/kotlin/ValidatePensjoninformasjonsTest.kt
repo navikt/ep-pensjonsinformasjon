@@ -74,7 +74,7 @@ class ValidatePensjoninformasjonsTest {
         val mockResponseEntity = createResponseEntityFromJsonFile(kravLokasjon)
         every { mockrestTemplate.exchange(any<String>(), any(), any(), eq(String::class.java)) } returns mockResponseEntity
     }
-    private fun createResponseEntityFromJsonFile(filePath: String, httpStatus: HttpStatus = HttpStatus.OK): ResponseEntity<String> {
+    private fun createResponseEntityFromJsonFile(filePath: String, httpStatus: HttpStatus = HttpStatus.OK): ResponseEntity<String?> {
         val mockResponseString = ResourceUtils.getFile(filePath).readText()
         return ResponseEntity(mockResponseString, httpStatus)
     }

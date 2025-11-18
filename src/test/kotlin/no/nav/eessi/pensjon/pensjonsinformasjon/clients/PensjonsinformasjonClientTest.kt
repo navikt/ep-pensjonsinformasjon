@@ -35,7 +35,7 @@ internal class PensjonsinformasjonClientTest{
         verify (exactly = 1) { mockrestTemplate.exchange("/fnr", HttpMethod.POST, any(), String::class.java) }
     }
 
-    private fun createResponseEntityFromJsonFile(filePath: String, httpStatus: HttpStatus = HttpStatus.OK): ResponseEntity<String> {
+    private fun createResponseEntityFromJsonFile(filePath: String, httpStatus: HttpStatus = HttpStatus.OK): ResponseEntity<String?> {
         val mockResponseString = ResourceUtils.getFile(filePath).readText()
         return ResponseEntity(mockResponseString, httpStatus)
     }
