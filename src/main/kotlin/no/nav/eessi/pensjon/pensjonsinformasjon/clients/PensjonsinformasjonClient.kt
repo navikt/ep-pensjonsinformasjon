@@ -196,7 +196,7 @@ class PensjonsinformasjonClient(
                 logger.error("PensjoninformasjonService feiler med HttpClientError body: $errorBody", hcee)
                 throw PensjoninformasjonException("PensjoninformasjonService feiler med innhenting av pensjoninformasjon fra PESYS, prøv igjen om litt")
             } catch (ex: Exception) {
-                logger.error("PensjoninformasjonService feiler med kontakt til PESYS pensjoninformajson, ${ex.message}", ex)
+                logger.error("PensjoninformasjonService feiler med kontakt til PESYS pensjoninformasjon, ${ex.message}", ex)
                 throw PensjoninformasjonException("PensjoninformasjonService feiler med ukjent feil mot PESYS. melding: ${ex.message}")
             }
         }
