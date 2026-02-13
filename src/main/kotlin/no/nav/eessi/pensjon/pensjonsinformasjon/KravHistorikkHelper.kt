@@ -27,7 +27,7 @@ object KravHistorikkHelper {
         val sortListFraKravIndex = sortList?.sortedBy { kravType.indexOfFirst { type -> type.name == it.kravType } }
 
         if (sortListFraKravIndex != null && sortListFraKravIndex.size > 1) {
-            logger.warn("Listen med krav er større enn én. Krav: {${sortList.size}")
+            logger.warn("Listen med krav er større enn én. Krav: ${sortList.size}")
         }
 
         sortListFraKravIndex?.forEach { kravHistorikk ->
