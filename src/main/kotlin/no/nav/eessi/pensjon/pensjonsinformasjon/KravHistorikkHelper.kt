@@ -58,7 +58,7 @@ object KravHistorikkHelper {
         return null
     }
 
-    fun hentKravHistorikkMedKravStatusTilBehandling(kravHistorikkListe: V1KravHistorikkListe?): V1KravHistorikk {
+    fun hentKravHistorikkMedKravStatusTilBehandling(kravHistorikkListe: V1KravHistorikkListe?): V1KravHistorikk? {
         val sortList = sortertKravHistorikk(kravHistorikkListe)
         sortList?.forEach {
             logger.debug("leter etter Krav status med ${Kravstatus.INNV}, fant ${it.kravType} med virkningstidspunkt dato : ${it.virkningstidspunkt}")
@@ -68,10 +68,10 @@ object KravHistorikkHelper {
             }
         }
         logger.error("Fant ikke noe Kravhistorikk..${Kravstatus.INNV}. Mangler vilkårsprlving/vedtak. følger ikke normal behandling")
-        return V1KravHistorikk()
+        return null
     }
 
-    fun hentKravHistorikkMedKravStatusAvslag(kravHistorikkListe: V1KravHistorikkListe?): V1KravHistorikk {
+    fun hentKravHistorikkMedKravStatusAvslag(kravHistorikkListe: V1KravHistorikkListe?): V1KravHistorikk? {
         val sortList = sortertKravHistorikk(kravHistorikkListe)
         sortList?.forEach {
             logger.debug("leter etter Krav status med ${Kravstatus.AVSL}, fant ${it.kravType} med virkningstidspunkt dato : ${it.virkningstidspunkt}")
@@ -81,7 +81,7 @@ object KravHistorikkHelper {
             }
         }
         logger.error("Fant ikke noe Kravhistorikk..${Kravstatus.AVSL}. Mangler vilkårsprøving. følger ikke normal behandling")
-        return V1KravHistorikk()
+        return null
     }
 
     fun hentKravHistorikkMedValgtKravType(kravHistorikkListe: V1KravHistorikkListe?, penKravtype: PenKravtype): V1KravHistorikk? {
@@ -102,11 +102,9 @@ object KravHistorikkHelper {
             if (kravKunUtland != null) return  kravKunUtland
 
             logger.info("Sakstatus: ${pensak?.status},sakstype: ${pensak?.sakType}")
-            return when (Sakstatus.byValue(pensak?.status!!)) {
-                Sakstatus.INNV -> hentKravHistorikkMedKravStatusTilBehandling(pensak.kravHistorikkListe)
-                Sakstatus.AVSL -> hentKravHistorikkMedKravStatusAvslag(pensak.kravHistorikkListe)
-                else -> hentKravHistorikkForsteGangsBehandlingUtlandEllerForsteGang(pensak.kravHistorikkListe)
-            }
+            val innvilgetKrav = hentKravHistorikkMedKravStatusTilBehandling(pensak?.kravHistorikkListe)
+            val avslaattKrav = hentKravHistorikkMedKravStatusAvslag(pensak?.kravHistorikkListe)
+            return innvilgetKrav ?: avslaattKrav ?: hentKravHistorikkForsteGangsBehandlingUtlandEllerForsteGang(pensak?.kravHistorikkListe)
 
         } catch (ex: Exception) {
             logger.warn("Fant ingen gyldig kravdato: $ex")
