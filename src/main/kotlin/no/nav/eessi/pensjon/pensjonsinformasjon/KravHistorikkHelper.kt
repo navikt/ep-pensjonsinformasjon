@@ -61,13 +61,13 @@ object KravHistorikkHelper {
     fun hentKravHistorikkMedKravStatusTilBehandling(kravHistorikkListe: V1KravHistorikkListe?): V1KravHistorikk {
         val sortList = sortertKravHistorikk(kravHistorikkListe)
         sortList?.forEach {
-            logger.debug("leter etter Krav status med ${Kravstatus.TIL_BEHANDLING}, fant ${it.kravType} med virkningstidspunkt dato : ${it.virkningstidspunkt}")
-            if (Kravstatus.TIL_BEHANDLING.name == it.status) {
-                logger.debug("Fant Kravhistorikk med ${it.status}")
+            logger.debug("leter etter Krav status med ${Kravstatus.INNV}, fant ${it.kravType} med virkningstidspunkt dato : ${it.virkningstidspunkt}")
+            if (Kravstatus.INNV.name == it.status) {
+                logger.debug("Fant Kravhistorikk med ${it.status} med virkningstidspunkt: ${it.virkningstidspunkt}")
                 return it
             }
         }
-        logger.error("Fant ikke noe Kravhistorikk..${Kravstatus.TIL_BEHANDLING}. Mangler vilkårsprlving/vedtak. følger ikke normal behandling")
+        logger.error("Fant ikke noe Kravhistorikk..${Kravstatus.INNV}. Mangler vilkårsprlving/vedtak. følger ikke normal behandling")
         return V1KravHistorikk()
     }
 
