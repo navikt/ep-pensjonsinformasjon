@@ -103,7 +103,7 @@ object KravHistorikkHelper {
 
             logger.info("Sakstatus: ${pensak?.status},sakstype: ${pensak?.sakType}")
             return when (Sakstatus.byValue(pensak?.status!!)) {
-                Sakstatus.TIL_BEHANDLING -> hentKravHistorikkMedKravStatusTilBehandling(pensak.kravHistorikkListe)
+                Sakstatus.INNV -> hentKravHistorikkMedKravStatusTilBehandling(pensak.kravHistorikkListe)
                 Sakstatus.AVSL -> hentKravHistorikkMedKravStatusAvslag(pensak.kravHistorikkListe)
                 else -> hentKravHistorikkForsteGangsBehandlingUtlandEllerForsteGang(pensak.kravHistorikkListe)
             }
