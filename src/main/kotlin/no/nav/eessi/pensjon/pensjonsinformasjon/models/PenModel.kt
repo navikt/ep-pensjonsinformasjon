@@ -12,6 +12,7 @@ enum class PenKravtype {
 
 enum class Kravstatus {
     TIL_BEHANDLING,
+    INNV,
     AVSL
 }
 
